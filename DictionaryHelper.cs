@@ -1,8 +1,50 @@
+﻿using SunamoTextOutputGenerator;
+
 namespace SunamoDictionary;
 
+//public partial class DictionaryHelper
+//{
+//    /// <summary>
+//    ///     If exists index A2, set to it A3
+//    ///     if don't, add with A3
+//    /// </summary>
+//    /// <typeparam name="T1"></typeparam>
+//    /// <typeparam name="T2"></typeparam>
+//    /// <param name="qs"></param>
+//    /// <param name="k"></param>
+//    /// <param name="v"></param>
+//    public static void AddOrSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
+//    {
+//        if (qs.ContainsKey(k))
+//        {
+//            qs[k] = v;
+//        }
+//        else
+//        {
+//            qs.Add(k, v);
+//        }
+//    }
 
+
+//}
 public partial class DictionaryHelper
 {
+    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict)
+    {
+        TextOutputGenerator tog = new TextOutputGenerator();
+
+        foreach (var item in dict)
+        {
+            tog.Header(item.Key);
+
+            var (s, ma) = NH.CalculateMedianAverageNoOut(item.Value);
+
+            tog.AppendLine(s);
+        }
+
+        return tog.ToString();
+    }
+
     public static Dictionary<string, string> KeepOnlyKeys(Dictionary<string, string> allParams, List<string> includeAlways)
     {
         foreach (var item in allParams.Keys.ToList())
@@ -281,5 +323,568 @@ public partial class DictionaryHelper
         return nt;
     }
 
+    /// <summary>
+    ///     A3 is inner type of collection entries
+    ///     dictS => is comparing with string
+    ///     As inner must be List, not IList etc.
+    ///     From outside is not possible as inner use other class based on IList
+    /// </summary>
+    /// <typeparam name="Key"></typeparam>
+    /// <typeparam name="Value"></typeparam>
+    /// <typeparam name="ColType"></typeparam>
+    /// <param name="sl"></param>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dict, Key key, Value value,
+    bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    {
+        var compWithString = false;
+        if (dictS != null) compWithString = true;
 
+        if (key is IList && typeof(ColType) != typeof(Object))
+        {
+            var keyE = key as IList<ColType>;
+            var contains = false;
+            foreach (var item in dict)
+            {
+                var keyD = item.Key as IList<ColType>;
+                if (keyD.SequenceEqual(keyE)) contains = true;
+            }
+
+            if (contains)
+            {
+                foreach (var item in dict)
+                {
+                    var keyD = item.Key as IList<ColType>;
+                    if (keyD.SequenceEqual(keyE))
+                    {
+                        if (withoutDuplicitiesInValue)
+                            if (item.Value.Contains(value))
+                                return;
+                        item.Value.Add(value);
+                    }
+                }
+            }
+            else
+            {
+                List<Value> ad = new();
+                ad.Add(value);
+                dict.Add(key, ad);
+
+                if (compWithString)
+                {
+                    List<string> ad2 = new();
+                    ad2.Add(value.ToString());
+                    dictS.Add(key, ad2);
+                }
+            }
+        }
+        else
+        {
+            var add = true;
+            lock (dict)
+            {
+                if (dict.ContainsKey(key))
+                {
+                    if (withoutDuplicitiesInValue)
+                    {
+                        if (dict[key].Contains(value))
+                            add = false;
+                        else if (compWithString)
+                            if (dictS[key].Contains(value.ToString()))
+                                add = false;
+                    }
+
+                    if (add)
+                    {
+                        var val = dict[key];
+
+                        if (val != null) val.Add(value);
+
+                        if (compWithString)
+                        {
+                            var val2 = dictS[key];
+
+                            if (val != null) val2.Add(value.ToString());
+                        }
+                    }
+                }
+                else
+                {
+                    if (!dict.ContainsKey(key))
+                    {
+                        List<Value> ad = new();
+                        ad.Add(value);
+                        dict.Add(key, ad);
+                    }
+                    else
+                    {
+                        dict[key].Add(value);
+                    }
+
+                    if (compWithString)
+                    {
+                        if (!dictS.ContainsKey(key))
+                        {
+                            List<string> ad2 = new();
+                            ad2.Add(value.ToString());
+                            dictS.Add(key, ad2);
+                        }
+                        else
+                        {
+                            dictS[key].Add(value.ToString());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Pokud A1 bude obsahovat skupinu pod názvem A2, vložím do této skupiny prvek A3
+    ///     Jinak do A1 vytvořím novou skupinu s klíčem A2 s hodnotou A3
+    ///     public static void AddOrCreate
+    ///     <Key, Value, C>
+    ///         (IDictionary<Key, C
+    ///         <Value>
+    ///             > sl, Key key, Value value, bool withoutDuplicitiesInValue = false, Dictionary<Key, C
+    ///             <Value>
+    ///                 > dictS = null) where C : IList
+    ///                 <Value>
+    ///                     -
+    ///                     takhle to nejde.
+    ///                     As inner must be List, not IList etc.
+    ///                     From outside is not possible as inner use other class based on IList
+    /// </summary>
+    /// <typeparam name="Key"></typeparam>
+    /// <typeparam name="Value"></typeparam>
+    /// <param name="sl"></param>
+    /// <param name="key"></param>
+    /// <param name="p"></param>
+    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, Value value,
+    bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    {
+        AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
+    }
+
+
+    public static void AddOrPlus<T>(Dictionary<T, int> sl, T key, int p)
+    {
+        if (sl.ContainsKey(key))
+            sl[key] += p;
+        else
+            sl.Add(key, p);
+    }
+
+    public static void AddOrPlus<T>(Dictionary<T, long> sl, T key, long p)
+    {
+        if (sl.ContainsKey(key))
+            sl[key] += p;
+        else
+            sl.Add(key, p);
+    }
+
+
+
+
+    private static Type type = typeof(DictionaryHelper);
+
+
+    public static void IncrementOrCreate<T>(Dictionary<T, int> sl, T baseNazevTabulky)
+    {
+        if (sl.ContainsKey(baseNazevTabulky))
+        {
+            sl[baseNazevTabulky]++;
+        }
+        else
+        {
+            sl.Add(baseNazevTabulky, 1);
+        }
+    }
+    public static Value GetFirstItemValue<Key, Value>(Dictionary<Key, Value> dict)
+    {
+        foreach (var item in dict)
+        {
+            return item.Value;
+        }
+
+        return default(Value);
+    }
+
+    public static Key GetFirstItemKey<Key, Value>(Dictionary<Key, Value> dict)
+    {
+        foreach (var item in dict)
+        {
+            return item.Key;
+        }
+
+        return default(Key);
+    }
+
+    public static short AddToIndexAndReturnIncrementedShort<T>(short i, Dictionary<short, T> colors, T colorOnWeb)
+    {
+        colors.Add(i, colorOnWeb);
+        i++;
+        return i;
+    }
+
+    public static Dictionary<Key, Value> GetDictionary<Key, Value>(List<Key> keys, List<Value> values)
+    {
+        ThrowEx.DifferentCountInLists("keys", keys.Count, "values", values.Count);
+        Dictionary<Key, Value> result = new Dictionary<Key, Value>();
+        for (int i = 0; i < keys.Count; i++)
+        {
+            result.Add(keys[i], values[i]);
+        }
+
+        return result;
+    }
+
+    public static Dictionary<string, string> GetDictionaryByKeyValueInString(string p, params string[] d1)
+    {
+        var sp = SHSplit.SplitMore(p, d1);
+        return GetDictionaryByKeyValueInString<string>(sp);
+    }
+
+    public static Dictionary<U, T> SwitchKeyAndValue<T, U>(Dictionary<T, U> dictionary)
+    {
+        Dictionary<U, T> d = new Dictionary<U, T>(dictionary.Count);
+        foreach (var item in dictionary)
+        {
+            d.Add(item.Value, item.Key);
+        }
+        return d;
+    }
+
+
+    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
+    {
+        if (qs.ContainsKey(k))
+        {
+            //qs[k] = v;
+        }
+        else
+        {
+            qs.Add(k, v);
+        }
+    }
+
+    public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> qs, T1 k, Func<T1, T2> i)
+    {
+        if (qs.ContainsKey(k))
+        {
+            return qs[k];
+        }
+        else
+        {
+            var v = i.Invoke(k);
+            qs.Add(k, v);
+            return v;
+        }
+    }
+
+    public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<int, T1> toAdd)
+    {
+        Dictionary<IDItemType, T1> r = new Dictionary<IDItemType, T1>(toAdd.Count);
+        foreach (var item in toAdd)
+        {
+            r.Add((IDItemType)(dynamic)item.Key, item.Value);
+        }
+        return r;
+    }
+
+    public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<short, T1> toAdd)
+    {
+        Dictionary<IDItemType, T1> r = new Dictionary<IDItemType, T1>(toAdd.Count);
+        foreach (var item in toAdd)
+        {
+            r.Add((IDItemType)(dynamic)item.Key, item.Value);
+        }
+        return r;
+    }
+
+    public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> p)
+    {
+        var methodName = Exc.CallingMethod();
+        ThrowEx.IsOdd("p", p);
+
+        Dictionary<T, T> result = new Dictionary<T, T>();
+        for (int i = 0; i < p.Count; i++)
+        {
+            result.Add(p[i], p[++i]);
+        }
+        return result;
+    }
+
+
+
+    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, List<Value> values, bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    {
+        foreach (var value in values)
+        {
+            AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
+        }
+    }
+
+
+
+
+    public static Dictionary<T1, T2> GetDictionaryFromTwoList<T1, T2>(List<T1> t1, List<T2> t2, bool addRandomWhenKeyExists = false)
+    {
+        // Zde mus� b�t .Count
+        ThrowEx.DifferentCountInLists("t1", t1.Count, "t2", t2.Count);
+
+        List<KeyValuePair<T1, T2>> l = new List<KeyValuePair<T1, T2>>();
+
+        for (int i = 0; i < t1.Count; i++)
+        {
+            l.Add(new KeyValuePair<T1, T2>(t1[i], t2[i]));
+        }
+
+        return GetDictionaryFromIList<T1, T2>(l, addRandomWhenKeyExists);
+    }
+
+
+
+    public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dict, T t, U u)
+    {
+        if (dict.ContainsKey(t))
+        {
+            return dict[t];
+        }
+        return new List<U>();
+    }
+
+    public static string GetOrKey<T>(Dictionary<T, string> a, T item2)
+    {
+        if (a.ContainsKey(item2))
+        {
+            return a[item2];
+        }
+        return item2.ToString();
+    }
+
+    public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dict, int v)
+    {
+        List<Dictionary<Key, Value>> retur = new List<Dictionary<Key, Value>>();
+        Dictionary<Key, Value> ds = new Dictionary<Key, Value>();
+
+        foreach (var item in dict)
+        {
+            ds.Add(item.Key, item.Value);
+            if (ds.Count == v)
+            {
+                retur.Add(ds);
+                ds = new Dictionary<Key, Value>();
+            }
+        }
+
+        if (ds.Count > 0)
+        {
+            retur.Add(ds);
+        }
+
+        return retur;
+    }
+
+
+    public static Dictionary<T1, T2> CloneDictionary<T1, T2>(Dictionary<T1, T2> filesWithTranslation)
+    {
+        var newDictionary = filesWithTranslation.ToDictionary(entry => entry.Key,
+        entry => entry.Value);
+        return newDictionary;
+    }
+
+    public static List<string> GetListStringFromDictionary(Dictionary<string, string> p)
+    {
+        List<string> vr = new List<string>();
+
+        foreach (var item in p)
+        {
+            vr.Add(item.Key);
+            vr.Add(item.Value);
+        }
+
+        return vr;
+    }
+
+    public static void AddOrSet(Dictionary<string, string> qs, string k, string v)
+    {
+        if (qs.ContainsKey(k))
+        {
+            qs[k] = v;
+        }
+        else
+        {
+            qs.Add(k, v);
+        }
+    }
+
+    public static List<string> GetListStringFromDictionaryDateTimeInt(IOrderedEnumerable<KeyValuePair<System.DateTime, int>> d)
+    {
+        List<string> vr = new List<string>(d.Count());
+        foreach (var item in d)
+        {
+            vr.Add(item.Value.ToString());
+        }
+
+        return vr;
+    }
+
+    public static List<string> GetListStringFromDictionaryIntInt(IOrderedEnumerable<KeyValuePair<int, int>> d)
+    {
+        List<string> vr = new List<string>(d.Count());
+        foreach (var item in d)
+        {
+            vr.Add(item.Value.ToString());
+        }
+
+        return vr;
+    }
+
+
+
+    public static Dictionary<T1, T2> GetDictionaryFromIOrderedEnumerable<T1, T2>(IOrderedEnumerable<KeyValuePair<T1, T2>> orderedEnumerable)
+    {
+        return GetDictionaryFromIList<T1, T2>(orderedEnumerable.ToList());
+    }
+
+    public static Dictionary<T1, T2> GetDictionaryFromIOrderedEnumerable2<T1, T2>(IOrderedEnumerable<KeyValuePair<T1, T2>> orderedEnumerable)
+    {
+        return GetDictionaryFromIList<T1, T2>(orderedEnumerable.ToList());
+    }
+
+    public static Dictionary<T1, T2> GetDictionaryFromIList<T1, T2>(List<KeyValuePair<T1, T2>> enumerable, bool addRandomWhenKeyExists = false)
+    {
+        Dictionary<T1, T2> d = new Dictionary<T1, T2>();
+        foreach (var item in enumerable)
+        {
+            var key = item.Key;
+
+            var c = d.ContainsKey(item.Key);
+            if (c)
+            {
+                if (addRandomWhenKeyExists)
+                {
+                    var k = key.ToString() + " " + RandomHelper.RandomString(5);
+                    key = (T1)(dynamic)k;
+                }
+            }
+            d.Add(key, item.Value);
+        }
+        return d;
+    }
+
+    /// <summary>
+    /// In addition to method AddOrCreate, more is checking whether value in collection does not exists
+    /// </summary>
+    /// <typeparam name = "Key"></typeparam>
+    /// <typeparam name = "Value"></typeparam>
+    /// <param name = "sl"></param>
+    /// <param name = "key"></param>
+    /// <param name = "value"></param>
+    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> sl, Key key, Value value)
+    {
+        if (sl.ContainsKey(key))
+        {
+            if (!sl[key].Contains(value))
+            {
+                sl[key].Add(value);
+            }
+        }
+        else
+        {
+            List<Value> ad = new List<Value>();
+            ad.Add(value);
+            sl.Add(key, ad);
+        }
+    }
+
+    public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> b64Images, T1 idApp, Func<T1, List<T2>> base64ImagesOfApp)
+    {
+        if (!b64Images.ContainsKey(idApp))
+        {
+            var r = base64ImagesOfApp(idApp);
+            b64Images.Add(idApp, r);
+            return r;
+        }
+        return b64Images[idApp];
+    }
+
+    #region For easy copy from DictionaryHelperShared.cs to SunamoExceptions
+    /// <summary>
+    /// If exists index A2, set to it A3
+    /// if don't, add with A3
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <param name="qs"></param>
+    /// <param name="k"></param>
+    /// <param name="v"></param>
+    public static void AddOrSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
+    {
+        if (qs.ContainsKey(k))
+        {
+            qs[k] = v;
+        }
+        else
+        {
+            qs.Add(k, v);
+        }
+    }
+    #endregion
+
+    #region For easy copy from DictionaryHelperShared64.cs to SunamoExceptions
+    /// <summary>
+    /// Copy elements to A1 from A2
+    /// </summary>
+    /// <param name="array"></param>
+    /// <param name="arrayIndex"></param>
+    public static void CopyTo<T, U>(Dictionary<T, U> _d, KeyValuePair<T, U>[] array, int arrayIndex)
+    {
+        array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
+
+        int i = 0;
+        bool add = false;
+        foreach (var item in _d)
+        {
+            if (i == arrayIndex && !add)
+            {
+                add = true;
+                i = 0;
+            }
+
+            if (add)
+            {
+                array[i] = new KeyValuePair<T, U>(item.Key, item.Value);
+            }
+
+            i++;
+        }
+    }
+
+    public static void CopyTo<T, U>(List<KeyValuePair<T, U>> _d, KeyValuePair<T, U>[] array, int arrayIndex)
+    {
+        array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
+
+        int i = 0;
+        bool add = false;
+        foreach (var item in _d)
+        {
+            if (i == arrayIndex && !add)
+            {
+                add = true;
+                i = 0;
+            }
+
+            if (add)
+            {
+                array[i] = new KeyValuePair<T, U>(item.Key, item.Value);
+            }
+
+            i++;
+        }
+    }
+
+    #endregion
 }
