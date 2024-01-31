@@ -1,5 +1,3 @@
-﻿using SunamoTextOutputGenerator;
-
 namespace SunamoDictionary;
 
 //public partial class DictionaryHelper
@@ -273,7 +271,7 @@ public partial class DictionaryHelper
             }
             return r;
         }
-        return CAG.ToList<string>();
+        return new List<string>();
     }
 
     public static int AddToIndexAndReturnIncrementedInt<T>(int i, Dictionary<int, T> colors, T colorOnWeb)
@@ -542,7 +540,7 @@ public partial class DictionaryHelper
 
     public static Dictionary<string, string> GetDictionaryByKeyValueInString(string p, params string[] d1)
     {
-        var sp = SHSplit.SplitMore(p, d1);
+        var sp = p.Split(d1, StringSplitOptions.RemoveEmptyEntries).ToList(); //SHSplit.SplitMore(p, d1);
         return GetDictionaryByKeyValueInString<string>(sp);
     }
 

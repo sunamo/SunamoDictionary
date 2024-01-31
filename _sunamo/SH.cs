@@ -1,7 +1,7 @@
 namespace SunamoDictionary._sunamo;
 
-internal class SH
+public class SH
 {
-    //internal static Func<string, string, List<string>> Split;
-    //internal static Func<string, string[], List<string>> SplitMore;
+    //public static Func<string, string, List<string>> Split;
+    //public static Func<string, string[], List<string>> SplitMore;
 }
