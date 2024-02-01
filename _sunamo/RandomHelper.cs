@@ -1,6 +1,6 @@
 namespace SunamoDictionary._sunamo;
 
-public class RandomHelper
+internal class RandomHelper
 {
-    public static Func<int, string> RandomString;
+    internal static Func<int, string> RandomString;
 }

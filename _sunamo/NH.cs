@@ -1,6 +1,9 @@
-namespace SunamoDictionary._sunamo;
 
-public class NH
+namespace SunamoDictionary._sunamo;
+using SunamoData;
+
+
+internal class NH
 {
-    public static Func<List<float>, (string, MedianAverage<double>)> CalculateMedianAverageNoOut;
+    internal static Func<List<float>, (string, MedianAverage<double>)> CalculateMedianAverageNoOut;
 }

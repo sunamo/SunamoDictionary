@@ -1,4 +1,7 @@
+
 namespace SunamoDictionary;
+using SunamoInterfaces.Interfaces;
+
 
 //public partial class DictionaryHelper
 //{
@@ -27,9 +30,8 @@ namespace SunamoDictionary;
 //}
 public partial class DictionaryHelper
 {
-    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict)
+    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, ITextOutputGenerator tog)
     {
-        TextOutputGenerator tog = new TextOutputGenerator();
 
         foreach (var item in dict)
         {
@@ -292,11 +294,11 @@ public partial class DictionaryHelper
     public static Dictionary<T1, T2> RemoveDuplicatedFromDictionaryByValues<T1, T2>(Dictionary<T1, T2> airPlaneCompanies, Dictionary<T1, T2> twoTimes)
     {
         //twoTimes = new Dictionary<T1, T2>();
-        CollectionWithoutDuplicates<T2> processed = new CollectionWithoutDuplicates<T2>();
+        List<T2> processed = new List<T2>();
         foreach (var item in airPlaneCompanies.Keys.ToList())
         {
             T2 value = airPlaneCompanies[item];
-            if (!processed.Add(value))
+            if (processed.Contains(value))
             {
                 if (twoTimes != null)
                 {
@@ -304,6 +306,10 @@ public partial class DictionaryHelper
                 }
 
                 airPlaneCompanies.Remove(item);
+            }
+            else
+            {
+                processed.Add(value);
             }
         }
 
