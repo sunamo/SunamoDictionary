@@ -28,6 +28,10 @@ using SunamoInterfaces.Interfaces;
 
 
 //}
+
+/// <summary>
+/// 
+/// </summary>
 public partial class DictionaryHelper
 {
     public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, ITextOutputGenerator tog)
@@ -57,21 +61,6 @@ public partial class DictionaryHelper
 
         return allParams;
     }
-
-    #region  from DictionaryHelperShared64.cs to SunamoExceptions
-
-
-
-
-    #endregion
-
-
-
-    #region  from DictionaryHelperShared.cs to SunamoExceptions
-
-    #endregion
-
-
 
     public static Dictionary<string, List<string>> CategoryParser(List<string> l, bool removeWhichHaveNoEntries)
     {
@@ -155,7 +144,24 @@ public partial class DictionaryHelper
         }
     }
 
+    public static IList<string> GetIfExists(Dictionary<string, List<string>> filesInSolutionReal, string prefix, string v, bool postfixWithA2)
+    {
+        if (filesInSolutionReal.ContainsKey(v))
+        {
+            var r = filesInSolutionReal[v];
+            if (postfixWithA2)
+            {
+                if (!string.IsNullOrEmpty(v))
+                {
+                    r = CA.PostfixIfNotEnding(v, r);
 
+                }
+                CA.Prepend(prefix, r);
+            }
+            return r;
+        }
+        return new List<string>();
+    }
 
     public static Dictionary<T, List<U>> GroupByValues<U, T, ColType>(Dictionary<U, T> dictionary)
     {
@@ -196,19 +202,7 @@ public partial class DictionaryHelper
         return default(T);
     }
 
-    public static void AppendLineOrCreate<T>(Dictionary<T, StringBuilder> sb, T n, string item)
-    {
-        if (sb.ContainsKey(n))
-        {
-            sb[n].AppendLine(item);
-        }
-        else
-        {
-            var sb2 = new StringBuilder();
-            sb2.AppendLine(item);
-            sb.Add(n, sb2);
-        }
-    }
+
 
     public static Dictionary<T, U> ReturnsCopy<T, U>(Dictionary<T, U> slovnik)
     {
@@ -221,67 +215,7 @@ public partial class DictionaryHelper
         return tu;
     }
 
-    public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, DateTime value)
-    {
-        TimeSpan ts = TimeSpan.FromTicks(value.Ticks);
-        AddOrCreateTimeSpan<Key>(sl, key, ts);
-    }
 
-    public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, TimeSpan value)
-    {
-        if (sl.ContainsKey(key))
-        {
-            sl[key] = sl[key].Add(value);
-        }
-        else
-        {
-            sl.Add(key, value);
-        }
-    }
-
-    public static void AddToNewDictionary<T, U>(Dictionary<T, U> l, T item, Dictionary<T, U> toReplace, bool throwExIfNotContains = true)
-    {
-        if (l.ContainsKey(item))
-        {
-            if (!toReplace.ContainsKey(item))
-            {
-                toReplace.Add(item, l[item]);
-            }
-        }
-        else
-        {
-            if (throwExIfNotContains)
-            {
-                ThrowEx.KeyNotFound<T, U>(l, nameof(l), item);
-            }
-        }
-    }
-
-    public static IList<string> GetIfExists(Dictionary<string, List<string>> filesInSolutionReal, string prefix, string v, bool postfixWithA2)
-    {
-        if (filesInSolutionReal.ContainsKey(v))
-        {
-            var r = filesInSolutionReal[v];
-            if (postfixWithA2)
-            {
-                if (!string.IsNullOrEmpty(v))
-                {
-                    r = CA.PostfixIfNotEnding(v, r);
-
-                }
-                CA.Prepend(prefix, r);
-            }
-            return r;
-        }
-        return new List<string>();
-    }
-
-    public static int AddToIndexAndReturnIncrementedInt<T>(int i, Dictionary<int, T> colors, T colorOnWeb)
-    {
-        colors.Add(i, colorOnWeb);
-        i++;
-        return i;
-    }
 
     /// <summary>
     /// A2 can be null
@@ -327,166 +261,7 @@ public partial class DictionaryHelper
         return nt;
     }
 
-    /// <summary>
-    ///     A3 is inner type of collection entries
-    ///     dictS => is comparing with string
-    ///     As inner must be List, not IList etc.
-    ///     From outside is not possible as inner use other class based on IList
-    /// </summary>
-    /// <typeparam name="Key"></typeparam>
-    /// <typeparam name="Value"></typeparam>
-    /// <typeparam name="ColType"></typeparam>
-    /// <param name="sl"></param>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dict, Key key, Value value,
-    bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
-    {
-        var compWithString = false;
-        if (dictS != null) compWithString = true;
 
-        if (key is IList && typeof(ColType) != typeof(Object))
-        {
-            var keyE = key as IList<ColType>;
-            var contains = false;
-            foreach (var item in dict)
-            {
-                var keyD = item.Key as IList<ColType>;
-                if (keyD.SequenceEqual(keyE)) contains = true;
-            }
-
-            if (contains)
-            {
-                foreach (var item in dict)
-                {
-                    var keyD = item.Key as IList<ColType>;
-                    if (keyD.SequenceEqual(keyE))
-                    {
-                        if (withoutDuplicitiesInValue)
-                            if (item.Value.Contains(value))
-                                return;
-                        item.Value.Add(value);
-                    }
-                }
-            }
-            else
-            {
-                List<Value> ad = new();
-                ad.Add(value);
-                dict.Add(key, ad);
-
-                if (compWithString)
-                {
-                    List<string> ad2 = new();
-                    ad2.Add(value.ToString());
-                    dictS.Add(key, ad2);
-                }
-            }
-        }
-        else
-        {
-            var add = true;
-            lock (dict)
-            {
-                if (dict.ContainsKey(key))
-                {
-                    if (withoutDuplicitiesInValue)
-                    {
-                        if (dict[key].Contains(value))
-                            add = false;
-                        else if (compWithString)
-                            if (dictS[key].Contains(value.ToString()))
-                                add = false;
-                    }
-
-                    if (add)
-                    {
-                        var val = dict[key];
-
-                        if (val != null) val.Add(value);
-
-                        if (compWithString)
-                        {
-                            var val2 = dictS[key];
-
-                            if (val != null) val2.Add(value.ToString());
-                        }
-                    }
-                }
-                else
-                {
-                    if (!dict.ContainsKey(key))
-                    {
-                        List<Value> ad = new();
-                        ad.Add(value);
-                        dict.Add(key, ad);
-                    }
-                    else
-                    {
-                        dict[key].Add(value);
-                    }
-
-                    if (compWithString)
-                    {
-                        if (!dictS.ContainsKey(key))
-                        {
-                            List<string> ad2 = new();
-                            ad2.Add(value.ToString());
-                            dictS.Add(key, ad2);
-                        }
-                        else
-                        {
-                            dictS[key].Add(value.ToString());
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    ///     Pokud A1 bude obsahovat skupinu pod názvem A2, vložím do této skupiny prvek A3
-    ///     Jinak do A1 vytvořím novou skupinu s klíčem A2 s hodnotou A3
-    ///     public static void AddOrCreate
-    ///     <Key, Value, C>
-    ///         (IDictionary<Key, C
-    ///         <Value>
-    ///             > sl, Key key, Value value, bool withoutDuplicitiesInValue = false, Dictionary<Key, C
-    ///             <Value>
-    ///                 > dictS = null) where C : IList
-    ///                 <Value>
-    ///                     -
-    ///                     takhle to nejde.
-    ///                     As inner must be List, not IList etc.
-    ///                     From outside is not possible as inner use other class based on IList
-    /// </summary>
-    /// <typeparam name="Key"></typeparam>
-    /// <typeparam name="Value"></typeparam>
-    /// <param name="sl"></param>
-    /// <param name="key"></param>
-    /// <param name="p"></param>
-    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, Value value,
-    bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
-    {
-        AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
-    }
-
-
-    public static void AddOrPlus<T>(Dictionary<T, int> sl, T key, int p)
-    {
-        if (sl.ContainsKey(key))
-            sl[key] += p;
-        else
-            sl.Add(key, p);
-    }
-
-    public static void AddOrPlus<T>(Dictionary<T, long> sl, T key, long p)
-    {
-        if (sl.ContainsKey(key))
-            sl[key] += p;
-        else
-            sl.Add(key, p);
-    }
 
 
 
@@ -561,31 +336,7 @@ public partial class DictionaryHelper
     }
 
 
-    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
-    {
-        if (qs.ContainsKey(k))
-        {
-            //qs[k] = v;
-        }
-        else
-        {
-            qs.Add(k, v);
-        }
-    }
 
-    public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> qs, T1 k, Func<T1, T2> i)
-    {
-        if (qs.ContainsKey(k))
-        {
-            return qs[k];
-        }
-        else
-        {
-            var v = i.Invoke(k);
-            qs.Add(k, v);
-            return v;
-        }
-    }
 
     public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<int, T1> toAdd)
     {
@@ -622,13 +373,7 @@ public partial class DictionaryHelper
 
 
 
-    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, List<Value> values, bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
-    {
-        foreach (var value in values)
-        {
-            AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
-        }
-    }
+
 
 
 
@@ -712,17 +457,7 @@ public partial class DictionaryHelper
         return vr;
     }
 
-    public static void AddOrSet(Dictionary<string, string> qs, string k, string v)
-    {
-        if (qs.ContainsKey(k))
-        {
-            qs[k] = v;
-        }
-        else
-        {
-            qs.Add(k, v);
-        }
-    }
+
 
     public static List<string> GetListStringFromDictionaryDateTimeInt(IOrderedEnumerable<KeyValuePair<System.DateTime, int>> d)
     {
@@ -804,16 +539,7 @@ public partial class DictionaryHelper
         }
     }
 
-    public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> b64Images, T1 idApp, Func<T1, List<T2>> base64ImagesOfApp)
-    {
-        if (!b64Images.ContainsKey(idApp))
-        {
-            var r = base64ImagesOfApp(idApp);
-            b64Images.Add(idApp, r);
-            return r;
-        }
-        return b64Images[idApp];
-    }
+
 
     #region For easy copy from DictionaryHelperShared.cs to SunamoExceptions
     /// <summary>
