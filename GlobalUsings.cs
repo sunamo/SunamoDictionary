@@ -9,3 +9,7 @@ global using SunamoData.Data;
 global using System.Data;
 global using SunamoValues.Constants;
 global using SunamoDictionary._sunamo;
+global using System.Collections.Generic;
+global using System.Collections;
+global using System.IO;
+
