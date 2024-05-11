@@ -1,5 +1,5 @@
 
-namespace SunamoDictionary._sunamo;
+namespace SunamoDictionary;
 using SunamoData;
 
 

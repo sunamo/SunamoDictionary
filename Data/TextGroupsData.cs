@@ -1,4 +1,4 @@
-namespace SunamoDictionary.Data;
+namespace SunamoDictionary;
 
 public class TextGroupsData
 {
