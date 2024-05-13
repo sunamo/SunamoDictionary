@@ -1,6 +1,6 @@
 
 namespace SunamoDictionary;
-using SunamoData;
+
 
 
 internal class NH
