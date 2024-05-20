@@ -1,14 +1,14 @@
-
 namespace
 #if SunamoDevCode
 SunamoDevCode
+#elif SunamoString
+SunamoString
+#elif SunamoWikipedia
+SunamoWikipedia
 #else
 SunamoDictionary
 #endif
 ;
-
-
-
 /// <summary>
 /// 
 /// </summary>
@@ -22,7 +22,6 @@ public partial class DictionaryHelper
         {
             result.Add(keys[i], values[i]);
         }
-
         return result;
     }
     public static Value GetFirstItemValue<Key, Value>(Dictionary<Key, Value> dict)
@@ -31,7 +30,6 @@ public partial class DictionaryHelper
         {
             return item.Value;
         }
-
         return default(Value);
     }
     public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> sl, Key key, Value value)
@@ -50,7 +48,6 @@ public partial class DictionaryHelper
             sl.Add(key, ad);
         }
     }
-
     internal static void AddOrSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
     {
         if (qs.ContainsKey(k))
@@ -62,7 +59,6 @@ public partial class DictionaryHelper
             qs.Add(k, v);
         }
     }
-
     internal static void AddOrSet(Dictionary<string, string> qs, string k, string v)
     {
         if (qs.ContainsKey(k))
@@ -74,7 +70,6 @@ public partial class DictionaryHelper
             qs.Add(k, v);
         }
     }
-
     #region AddOrCreate
     /// <summary>
     ///     A3 is inner type of collection entries
@@ -93,7 +88,6 @@ public partial class DictionaryHelper
     {
         var compWithString = false;
         if (dictS != null) compWithString = true;
-
         if (key is IList && typeof(ColType) != typeof(Object))
         {
             var keyE = key as IList<ColType>;
@@ -103,7 +97,6 @@ public partial class DictionaryHelper
                 var keyD = item.Key as IList<ColType>;
                 if (keyD.SequenceEqual(keyE)) contains = true;
             }
-
             if (contains)
             {
                 foreach (var item in dict)
@@ -123,7 +116,6 @@ public partial class DictionaryHelper
                 List<Value> ad = new();
                 ad.Add(value);
                 dict.Add(key, ad);
-
                 if (compWithString)
                 {
                     List<string> ad2 = new();
@@ -147,17 +139,13 @@ public partial class DictionaryHelper
                             if (dictS[key].Contains(value.ToString()))
                                 add = false;
                     }
-
                     if (add)
                     {
                         var val = dict[key];
-
                         if (val != null) val.Add(value);
-
                         if (compWithString)
                         {
                             var val2 = dictS[key];
-
                             if (val != null) val2.Add(value.ToString());
                         }
                     }
@@ -174,7 +162,6 @@ public partial class DictionaryHelper
                     {
                         dict[key].Add(value);
                     }
-
                     if (compWithString)
                     {
                         if (!dictS.ContainsKey(key))
@@ -192,7 +179,6 @@ public partial class DictionaryHelper
             }
         }
     }
-
     internal static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, Value value,
         bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
     {
