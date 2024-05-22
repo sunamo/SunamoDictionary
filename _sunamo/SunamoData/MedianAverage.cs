@@ -1,13 +1,13 @@
 namespace SunamoDictionary;
 
 
-public class MedianAverage<T>
+internal class MedianAverage<T>
 {
-    public T median;
-    public T average;
-    public T min;
-    public T max;
-    public int count;
+    internal T median;
+    internal T average;
+    internal T min;
+    internal T max;
+    internal int count;
     public override string ToString()
     {
         return $"Count: {count}, Median: {median}, Average: {average}, Min: {min}, Max: {max}";
