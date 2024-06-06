@@ -8,7 +8,7 @@
 /// </summary>
 
 namespace SunamoDictionary;
-public partial class DictionaryHelperWithDeps
+public partial class DictionaryHelper
 {
     #region AddOrCreateTimeSpan
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, DateTime value)

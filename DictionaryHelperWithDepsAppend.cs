@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoDictionary;
-public partial class DictionaryHelperWithDeps
+public partial class DictionaryHelper
 {
     public static void AppendLineOrCreate<T>(Dictionary<T, StringBuilder> sb, T n, string item)
     {

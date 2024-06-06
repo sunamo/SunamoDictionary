@@ -16,6 +16,6 @@ public class TextGroupsData
         }
 
         var reversed = result.Reverse().ToList();
-        return DictionaryHelperWithDeps.GetDictionaryFromIList(reversed);
+        return DictionaryHelper.GetDictionaryFromIList(reversed);
     }
 }
