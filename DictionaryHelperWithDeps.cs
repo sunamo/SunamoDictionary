@@ -15,6 +15,8 @@ SunamoDictionary
 /// Mám tu DictionaryHelperWithDeps a DictionaryHelper se stejným obsahem
 /// V jiných částech řešení se stále používá DictionaryHelper
 /// Takhle jsem to chtěl, abych neimportoval WithDeps do jiných projektů 
+/// 
+/// Když jsem vyndal _sunamo a zkusil zkompilovat, deps chyběli v DictionaryHelperWithDeps, 1x i v DictionaryHelperWithDepsAdd
 /// </summary>
 public partial class DictionaryHelperWithDeps
 {
