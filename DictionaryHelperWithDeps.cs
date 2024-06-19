@@ -10,10 +10,39 @@ SunamoDictionary
 
 
 /// <summary>
+/// Už jsem z toho blázen
 /// 
+/// Mám tu DictionaryHelperWithDeps a DictionaryHelper se stejným obsahem
+/// V jiných částech řešení se stále používá DictionaryHelper
+/// Takhle jsem to chtěl, abych neimportoval WithDeps do jiných projektů 
 /// </summary>
 public partial class DictionaryHelperWithDeps
 {
+    /// <summary>
+    /// In addition to method AddOrCreate, more is checking whether value in collection does not exists
+    /// </summary>
+    /// <typeparam name = "Key"></typeparam>
+    /// <typeparam name = "Value"></typeparam>
+    /// <param name = "sl"></param>
+    /// <param name = "key"></param>
+    /// <param name = "value"></param>
+    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> sl, Key key, Value value)
+    {
+        if (sl.ContainsKey(key))
+        {
+            if (!sl[key].Contains(value))
+            {
+                sl[key].Add(value);
+            }
+        }
+        else
+        {
+            List<Value> ad = new List<Value>();
+            ad.Add(value);
+            sl.Add(key, ad);
+        }
+    }
+
     public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, ITextOutputGenerator tog)
     {
 

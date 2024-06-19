@@ -7,6 +7,9 @@
     <Description>Your help for working with dictionary</Description>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="_sunamo\**" />
+    <EmbeddedResource Remove="_sunamo\**" />
+    <None Remove="_sunamo\**" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);ASYNC;SunamoDictionary</DefineConstants>
