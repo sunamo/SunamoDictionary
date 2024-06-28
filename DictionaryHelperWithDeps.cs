@@ -1,11 +1,4 @@
 
-namespace
-#if SunamoDevCode
-SunamoDevCode
-#else
-SunamoDictionary
-#endif
-;
 
 
 
@@ -627,4 +620,5 @@ public partial class DictionaryHelperWithDeps
 
     #endregion
 }
+
 
