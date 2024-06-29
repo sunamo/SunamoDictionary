@@ -102,6 +102,7 @@ public partial class DictionaryHelper
         }
     }
 
+    #region AddOrCreate když key i value není list
     /// <summary>
     ///     A3 is inner type of collection entries
     ///     dictS => is comparing with string
@@ -233,6 +234,7 @@ public partial class DictionaryHelper
     {
         AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
     }
+    #endregion
     #endregion
 
     #region AddOrPlus

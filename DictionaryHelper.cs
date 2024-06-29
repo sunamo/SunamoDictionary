@@ -8,19 +8,19 @@ namespace SunamoDictionary;
 /// </summary>
 public partial class DictionaryHelper
 {
-    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, ITextOutputGenerator tog)
+    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, TextOutputGeneratorDictionary tog)
     {
+        ThrowEx.Custom("Tato třída zde vůbec nepatřila. Má mnoho závislostí: TextOutputGenerator a CalculateMedianAverageNoOut - který má zase další - třídu MedianAverage.");
+        //foreach (var item in dict)
+        //{
+        //    tog.Header(item.Key);
 
-        foreach (var item in dict)
-        {
-            tog.Header(item.Key);
+        //    var (s, ma) = NH.CalculateMedianAverageNoOut(item.Value);
 
-            var (s, ma) = NH.CalculateMedianAverageNoOut(item.Value);
+        //    tog.AppendLine(s);
+        //}
 
-            tog.AppendLine(s);
-        }
-
-        return tog.ToString();
+        //return tog.ToString();
     }
 
     public static Dictionary<string, string> KeepOnlyKeys(Dictionary<string, string> allParams, List<string> includeAlways)
