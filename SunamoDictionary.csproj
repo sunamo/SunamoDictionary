@@ -12,9 +12,4 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>$(DefineConstants);ASYNC;SunamoDictionary</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\SunamoValues\Constants\ComparerConsts.cs" Link="_linked\SunamoValues\Constants\ComparerConsts.cs" />
-    <Compile Include="..\SunamoData\Data\NTree.cs" Link="_linked\SunamoData\Data\NTree.cs" />
-    <Compile Include="..\SunamoInterfaces\Interfaces\ITextOutputGenerator.cs" Link="_linked\SunamoInterfaces\Interfaces\ITextOutputGenerator.cs" />
-  </ItemGroup>
 </Project>
