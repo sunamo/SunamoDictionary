@@ -291,15 +291,15 @@ public partial class DictionaryHelper
         }
     }
 
-    public static void AddOrSet(Dictionary<string, string> qs, string k, string v)
-    {
-        if (qs.ContainsKey(k))
-        {
-            qs[k] = v;
-        }
-        else
-        {
-            qs.Add(k, v);
-        }
-    }
+    //public static void AddOrSet(Dictionary<string, string> qs, string k, string v)
+    //{
+    //    if (qs.ContainsKey(k))
+    //    {
+    //        qs[k] = v;
+    //    }
+    //    else
+    //    {
+    //        qs.Add(k, v);
+    //    }
+    //}
 }

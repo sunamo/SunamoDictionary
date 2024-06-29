@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-internal class TextOutputGeneratorDictionary
+public class TextOutputGeneratorDictionary
 {
     internal void AppendLine(object s)
     {

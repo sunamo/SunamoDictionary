@@ -46,19 +46,21 @@ public partial class DictionaryHelper
         }
     }
 
-    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, ITextOutputGenerator tog)
+
+
+    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, object tog)
     {
+        throw new Exception("Deps methods, MedianAverage<T> etc.");
+        //foreach (var item in dict)
+        //{
+        //    tog.Header(item.Key);
 
-        foreach (var item in dict)
-        {
-            tog.Header(item.Key);
+        //    var (s, ma) = NH.CalculateMedianAverageNoOut(item.Value);
 
-            var (s, ma) = NH.CalculateMedianAverageNoOut(item.Value);
+        //    tog.AppendLine(s);
+        //}
 
-            tog.AppendLine(s);
-        }
-
-        return tog.ToString();
+        //return tog.ToString();
     }
 
     public static Dictionary<string, string> KeepOnlyKeys(Dictionary<string, string> allParams, List<string> includeAlways)
@@ -127,25 +129,27 @@ public partial class DictionaryHelper
         return r;
     }
 
-    public static NTree<string> CreateTree(Dictionary<string, List<string>> d)
+    public static object CreateTree(Dictionary<string, List<string>> d)
     {
-        NTree<string> t = new NTree<string>(string.Empty);
 
-        foreach (var item in d)
-        {
-            var child = t.AddChild(item.Key);
+        throw new Exception("Code without NTreeDictionary");
+        //NTreeDictionary<string> t = new NTreeDic tionary<string>(string.Empty);
 
-            foreach (var v in item.Value)
-            {
-                child.AddChild(v);
-            }
+        //foreach (var item in d)
+        //{
+        //    var child = t.AddChild(item.Key);
 
-            child.children = new LinkedList<NTree<string>>(child.children.Reverse());
-        }
+        //    foreach (var v in item.Value)
+        //    {
+        //        child.AddChild(v);
+        //    }
+
+        //    child.children = new LinkedList<NTreeDictionary<string>>(child.children.Reverse());
+        //}
 
 
 
-        return t;
+        //return t;
     }
 
     public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> st, T v)
@@ -203,15 +207,16 @@ public partial class DictionaryHelper
     /// <param name = "g"></param>
     private T FindIndexOfValue<T, U>(Dictionary<T, U> g, U p1, T p2)
     {
-        foreach (KeyValuePair<T, U> var in g)
-        {
-            if (Comparer<U>.Default.Compare(var.Value, p1) == ComparerConsts.Higher && Comparer<T>.Default.Compare(var.Key, p2) == ComparerConsts.Lower)
-            {
-                return var.Key;
-            }
-        }
+        throw new Exception("RUn without ComparerConsts");
+        //foreach (KeyValuePair<T, U> var in g)
+        //{
+        //    if (Comparer<U>.Default.Compare(var.Value, p1) == ComparerConsts.Higher && Comparer<T>.Default.Compare(var.Key, p2) == ComparerConsts.Lower)
+        //    {
+        //        return var.Key;
+        //    }
+        //}
 
-        return default(T);
+        //return default(T);
     }
 
 
@@ -526,30 +531,7 @@ public partial class DictionaryHelper
         return d;
     }
 
-    /// <summary>
-    /// In addition to method AddOrCreate, more is checking whether value in collection does not exists
-    /// </summary>
-    /// <typeparam name = "Key"></typeparam>
-    /// <typeparam name = "Value"></typeparam>
-    /// <param name = "sl"></param>
-    /// <param name = "key"></param>
-    /// <param name = "value"></param>
-    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> sl, Key key, Value value)
-    {
-        if (sl.ContainsKey(key))
-        {
-            if (!sl[key].Contains(value))
-            {
-                sl[key].Add(value);
-            }
-        }
-        else
-        {
-            List<Value> ad = new List<Value>();
-            ad.Add(value);
-            sl.Add(key, ad);
-        }
-    }
+
 
 
 
