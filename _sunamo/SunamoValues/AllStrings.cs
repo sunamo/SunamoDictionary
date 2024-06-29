@@ -1,5 +1,5 @@
 
-namespace SunamoValues;
+namespace SunamoDictionary;
 public class AllStrings
 {
     public const string dot = ".";

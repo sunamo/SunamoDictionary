@@ -1,5 +1,5 @@
 
-namespace SunamoXlfKeys;
+namespace SunamoDictionary;
 /// < summary>
 ///     Wont add to.xlf if is key in XlfKeys
 /// </summary>

@@ -1,5 +1,5 @@
 
-namespace SunamoExceptions;
+namespace SunamoDictionary;
 public class TranslateAble
 {
     

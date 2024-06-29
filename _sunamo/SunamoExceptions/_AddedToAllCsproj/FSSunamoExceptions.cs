@@ -1,5 +1,5 @@
 
-namespace SunamoExceptions;
+namespace SunamoDictionary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
