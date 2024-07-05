@@ -1,10 +1,4 @@
-
 namespace SunamoDictionary._sunamo.SunamoCollections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 internal class CA
@@ -31,4 +25,3 @@ internal class CA
         return toReplace;
     }
 }
-

@@ -1,5 +1,3 @@
-
-
 namespace
 #if SunamoDevCode
 SunamoDevCode

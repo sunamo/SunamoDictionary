@@ -18,3 +18,6 @@ global using SunamoDictionary._public.SunamoExceptions.OnlyInSE;
 global using SunamoDictionary._public.SunamoExceptions._AddedToAllCsproj;
 global using SunamoDictionary._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoDictionary._sunamo.SunamoExceptions._AddedToAllCsproj;
+global using System.Diagnostics;
+global using System.Net;
+global using System.Threading.Tasks;

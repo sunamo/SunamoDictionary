@@ -1,4 +1,3 @@
-
 namespace SunamoDictionary._public.SunamoValues;
 public class AllChars
 {
