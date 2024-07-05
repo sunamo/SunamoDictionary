@@ -1,5 +1,5 @@
 
-namespace SunamoDictionary;
+namespace SunamoDictionary._public.SunamoExceptions.OnlyInSE;
 using System.Collections;
 using System.Net;
 using System.Text;

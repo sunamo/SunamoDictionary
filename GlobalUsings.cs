@@ -3,15 +3,18 @@ global using System;
 global using System.Linq;
 global using System.Text;
 global using System.Collections;
-
-
-
 global using System.Data;
-
-
 global using System.Collections.Generic;
 global using System.Collections;
 global using System.IO;
-
 global using System.Diagnostics.CodeAnalysis;
 global using System.Reflection;
+global using SunamoDictionary;
+global using SunamoDictionary.Data;
+global using SunamoDictionary._public.SunamoValues;
+global using SunamoDictionary._public.SunamoXlfKeys;
+global using SunamoDictionary._sunamo.SunamoCollections;
+global using SunamoDictionary._public.SunamoExceptions.OnlyInSE;
+global using SunamoDictionary._public.SunamoExceptions._AddedToAllCsproj;
+global using SunamoDictionary._sunamo.SunamoExceptions.OnlyInSE;
+global using SunamoDictionary._sunamo.SunamoExceptions._AddedToAllCsproj;

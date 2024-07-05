@@ -1,5 +1,5 @@
 
-namespace SunamoDictionary;
+namespace SunamoDictionary._sunamo.SunamoExceptions._AddedToAllCsproj;
 internal class SHSunamoExceptions
 {
     public static string JoinNL(List<string> l)

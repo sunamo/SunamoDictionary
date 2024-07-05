@@ -1,5 +1,5 @@
 
-namespace SunamoDictionary;
+namespace SunamoDictionary._public.SunamoValues;
 public class AllChars
 {
     public static List<char> vsZnakyWithoutSpecial;

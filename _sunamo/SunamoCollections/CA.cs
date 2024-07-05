@@ -1,5 +1,5 @@
 
-namespace SunamoDictionary;
+namespace SunamoDictionary._sunamo.SunamoCollections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
