@@ -21,3 +21,4 @@ global using SunamoDictionary._sunamo.SunamoExceptions._AddedToAllCsproj;
 global using System.Diagnostics;
 global using System.Net;
 global using System.Threading.Tasks;
+global using SunamoDictionary._sunamo;

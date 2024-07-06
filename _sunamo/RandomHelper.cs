@@ -1,11 +1,7 @@
 namespace SunamoDictionary._sunamo;
-
-
 internal class RandomHelper
 {
-
-
-    public static string RandomString(int length)
+    internal static string RandomString(int length)
     {
         Random random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
