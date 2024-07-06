@@ -1,7 +1,5 @@
-
 namespace SunamoDictionary._sunamo.SunamoValues;
 
-namespace SunamoDictionary._sunamo.SunamoValues;
 internal class AllStrings
 {
     internal const string dot = ".";

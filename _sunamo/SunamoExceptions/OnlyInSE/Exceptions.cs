@@ -1,7 +1,5 @@
-
 namespace SunamoDictionary._sunamo.SunamoExceptions.OnlyInSE;
 
-namespace SunamoDictionary._sunamo.SunamoExceptions.OnlyInSE;
 internal class Exceptions
 {
     internal static string UseRlc(string before)

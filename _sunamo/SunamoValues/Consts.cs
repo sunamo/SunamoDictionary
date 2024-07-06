@@ -1,12 +1,4 @@
-
 namespace SunamoDictionary._sunamo.SunamoValues;
-
-namespace SunamoDictionary._sunamo.SunamoValues;
-
-
-/// <summary>
-/// Nastaven na internal protože dle mě nemusí být internal - opakuje se ve SunamoDotnetCmdBuilder, SunamoDictionary a SunamoValues
-/// </summary>
 
 internal class Consts
 {

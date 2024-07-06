@@ -1,7 +1,5 @@
-
 namespace SunamoDictionary._sunamo.SunamoValues;
 
-namespace SunamoDictionary._sunamo.SunamoValues;
 /// <summary>
 /// Nastaven na internal protože dle mě nemusí být public
 /// </summary>

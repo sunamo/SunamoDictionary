@@ -1,9 +1,4 @@
-
 namespace SunamoDictionary._sunamo.SunamoXlfKeys;
-
-namespace SunamoDictionary._sunamo.SunamoXlfKeys;
-
-
 
 /// <summary>
 /// Nastaven na internal protože dle mě nemusí být internal - opakuje se ve SunamoDotnetCmdBuilder, SunamoDictionary a SunamoValues
