@@ -1,3 +1,5 @@
+using SunamoDictionary._sunamo;
+
 namespace
 #if SunamoDevCode
 SunamoDevCode

@@ -1,4 +1,4 @@
-namespace SunamoDictionary;
+namespace SunamoDictionary._sunamo;
 
 
 internal class RandomHelper
