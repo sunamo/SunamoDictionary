@@ -1,7 +1,5 @@
-using SunamoDictionary;
 
 namespace SunamoDictionary;
-
 /// <summary>
 /// Už jsem z toho blázen
 /// 
