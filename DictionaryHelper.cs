@@ -1,14 +1,6 @@
-using SunamoDictionary._sunamo;
+using SunamoDictionary;
 
-namespace
-#if SunamoDevCode
-SunamoDevCode
-#else
-SunamoDictionary
-#endif
-;
-
-
+namespace SunamoDictionary;
 
 /// <summary>
 /// Už jsem z toho blázen

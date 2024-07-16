@@ -1,13 +1,5 @@
-/// <summary>
-/// AddOrCreateTimeSpan - umí přidávat časové úseky jako TimeSpan
-/// AddOrCreate - ve value je List, 
-/// AddOrPlus - ve value je number
-/// AddOrSet - va value je string
-/// 
-/// 
-/// </summary>
-
 namespace SunamoDictionary;
+
 public partial class DictionaryHelper
 {
     #region AddOrCreateTimeSpan

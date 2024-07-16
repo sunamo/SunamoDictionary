@@ -1,4 +1,5 @@
 namespace SunamoDictionary;
+
 public partial class DictionaryHelper
 {
     public static void AppendLineOrCreate<T>(Dictionary<T, StringBuilder> sb, T n, string item)
