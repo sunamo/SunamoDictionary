@@ -12,3 +12,4 @@ global using System.Diagnostics;
 global using System.Net;
 global using SunamoDictionary._sunamo;
 global using SunamoDictionary._sunamo.SunamoValues;
+global using SunamoDictionary._sunamo.SunamoCollections;

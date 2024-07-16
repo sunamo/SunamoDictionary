@@ -1,4 +1,4 @@
-//namespace SunamoDictionary._sunamo.SunamoCollections;
+namespace SunamoDictionary._sunamo.SunamoCollections;
 
 internal class CA
 {
