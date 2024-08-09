@@ -2,29 +2,61 @@ namespace SunamoDictionary;
 
 public partial class DictionaryHelper
 {
+    [Obsolete("Vůbec nechápu smysl této metody")]
+    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
+    {
+        if (qs.ContainsKey(k))
+        {
+            //qs[k] = v;
+        }
+        else
+        {
+            qs.Add(k, v);
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <param name="qs"></param>
+    /// <param name="k"></param>
+    /// <param name="i"></param>
+    /// <returns></returns>
+    public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> qs, T1 k, Func<T1, T2> i)
+    {
+        if (qs.ContainsKey(k))
+        {
+            return qs[k];
+        }
+
+        var v = i.Invoke(k);
+        qs.Add(k, v);
+        return v;
+    }
+
     #region AddOrCreateTimeSpan
+
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, DateTime value)
     {
-        TimeSpan ts = TimeSpan.FromTicks(value.Ticks);
-        AddOrCreateTimeSpan<Key>(sl, key, ts);
+        var ts = TimeSpan.FromTicks(value.Ticks);
+        AddOrCreateTimeSpan(sl, key, ts);
     }
 
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, TimeSpan value)
     {
         if (sl.ContainsKey(key))
-        {
             sl[key] = sl[key].Add(value);
-        }
         else
-        {
             sl.Add(key, value);
-        }
     }
+
     #endregion
 
     #region Other
+
     /// <summary>
-    /// Přidá do nového slovníku pokud existuje
+    ///     Přidá do nového slovníku pokud existuje
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="U"></typeparam>
@@ -32,24 +64,18 @@ public partial class DictionaryHelper
     /// <param name="item"></param>
     /// <param name="toReplace"></param>
     /// <param name="throwExIfNotContains"></param>
-    public static void AddToNewDictionary<T, U>(Dictionary<T, U> l, T item, Dictionary<T, U> toReplace, bool throwExIfNotContains = true)
+    public static void AddToNewDictionary<T, U>(Dictionary<T, U> l, T item, Dictionary<T, U> toReplace,
+        bool throwExIfNotContains = true)
     {
         if (l.ContainsKey(item))
         {
-            if (!toReplace.ContainsKey(item))
-            {
-                toReplace.Add(item, l[item]);
-            }
+            if (!toReplace.ContainsKey(item)) toReplace.Add(item, l[item]);
         }
         else
         {
-            if (throwExIfNotContains)
-            {
-                ThrowEx.KeyNotFound<T, U>(l, nameof(l), item);
-            }
+            if (throwExIfNotContains) ThrowEx.KeyNotFound(l, nameof(l), item);
         }
     }
-
 
 
     public static int AddToIndexAndReturnIncrementedInt<T>(int i, Dictionary<int, T> colors, T colorOnWeb)
@@ -58,9 +84,11 @@ public partial class DictionaryHelper
         i++;
         return i;
     }
+
     #endregion
 
     #region AddOrCreate
+
     public static void AddOrCreate<T, U>(Dictionary<T, List<U>> dict, T key, U value)
     {
         if (dict.ContainsKey(key))
@@ -75,7 +103,8 @@ public partial class DictionaryHelper
         }
     }
 
-    public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> b64Images, T1 idApp, Func<T1, List<T2>> base64ImagesOfApp)
+    public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> b64Images, T1 idApp,
+        Func<T1, List<T2>> base64ImagesOfApp)
     {
         if (!b64Images.ContainsKey(idApp))
         {
@@ -83,18 +112,18 @@ public partial class DictionaryHelper
             b64Images.Add(idApp, r);
             return r;
         }
+
         return b64Images[idApp];
     }
 
-    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, List<Value> values, bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, List<Value> values,
+        bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
     {
-        foreach (var value in values)
-        {
-            AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
-        }
+        foreach (var value in values) AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
     }
 
     #region AddOrCreate když key i value není list
+
     /// <summary>
     ///     A3 is inner type of collection entries
     ///     dictS => is comparing with string
@@ -108,12 +137,12 @@ public partial class DictionaryHelper
     /// <param name="key"></param>
     /// <param name="value"></param>
     public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dict, Key key, Value value,
-    bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+        bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
     {
         var compWithString = false;
         if (dictS != null) compWithString = true;
 
-        if (key is IList && typeof(ColType) != typeof(Object))
+        if (key is IList && typeof(ColType) != typeof(object))
         {
             var keyE = key as IList<ColType>;
             var contains = false;
@@ -222,14 +251,17 @@ public partial class DictionaryHelper
     /// <param name="key"></param>
     /// <param name="p"></param>
     public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, Value value,
-    bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+        bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
     {
         AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
     }
+
     #endregion
+
     #endregion
 
     #region AddOrPlus
+
     public static void AddOrPlus<T>(Dictionary<T, int> sl, T key, int p)
     {
         if (sl.ContainsKey(key))
@@ -245,43 +277,8 @@ public partial class DictionaryHelper
         else
             sl.Add(key, p);
     }
+
     #endregion
-
-    [Obsolete("Vůbec nechápu smysl této metody")]
-    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
-    {
-        if (qs.ContainsKey(k))
-        {
-            //qs[k] = v;
-        }
-        else
-        {
-            qs.Add(k, v);
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T1"></typeparam>
-    /// <typeparam name="T2"></typeparam>
-    /// <param name="qs"></param>
-    /// <param name="k"></param>
-    /// <param name="i"></param>
-    /// <returns></returns>
-    public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> qs, T1 k, Func<T1, T2> i)
-    {
-        if (qs.ContainsKey(k))
-        {
-            return qs[k];
-        }
-        else
-        {
-            var v = i.Invoke(k);
-            qs.Add(k, v);
-            return v;
-        }
-    }
 
     //public static void AddOrSet(Dictionary<string, string> qs, string k, string v)
     //{
