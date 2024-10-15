@@ -1,5 +1,4 @@
 namespace SunamoDictionary;
-
 /// <summary>
 ///     Už jsem z toho blázen
 ///     Mám tu DictionaryHelper a DictionaryHelper se stejným obsahem
@@ -297,7 +296,7 @@ public partial class DictionaryHelper
 
     public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> p)
     {
-        var methodName = Exc.CallingMethod();
+        var methodName = Exceptions.CallingMethod();
         ThrowEx.IsOdd("p", p);
 
         var result = new Dictionary<T, T>();
