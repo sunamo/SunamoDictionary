@@ -8,7 +8,7 @@ global using System.IO;
 global using SunamoDictionary._sunamo.SunamoExceptions;
 global using System.Diagnostics;
 global using SunamoDictionary._sunamo;
-global using SunamoDictionary._sunamo.SunamoValues;
+global using SunamoDictionary;
 global using SunamoDictionary._sunamo.SunamoCollections;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Reflection;

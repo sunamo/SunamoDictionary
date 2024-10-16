@@ -68,10 +68,10 @@ public partial class DictionaryHelper
         {
             var item = l[i].Trim();
             if (item == string.Empty) continue;
-            if (item.EndsWith(AllStrings.colon))
+            if (item.EndsWith(":"))
             {
                 lsToAdd = new List<string>();
-                ds.Add(item.TrimEnd(AllChars.colon), lsToAdd);
+                ds.Add(item.TrimEnd(':'), lsToAdd);
             }
             else
             {
@@ -83,7 +83,7 @@ public partial class DictionaryHelper
             for (var i = ds.Keys.Count - 1; i >= 0; i--)
             {
                 var key = ds.ElementAt(i).Key;
-                if (ds[key][0] == Consts.NoEntries) ds.Remove(key);
+                if (ds[key][0] == "No entries") ds.Remove(key);
             }
 
         return ds;
