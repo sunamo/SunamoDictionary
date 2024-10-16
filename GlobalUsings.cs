@@ -11,3 +11,4 @@ global using SunamoDictionary._sunamo;
 global using SunamoDictionary._sunamo.SunamoCollections;
 global using System.Reflection;
 global using System.Net;
+global using System.Diagnostics.CodeAnalysis;
