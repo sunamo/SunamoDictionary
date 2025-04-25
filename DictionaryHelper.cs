@@ -1,4 +1,5 @@
 namespace SunamoDictionary;
+
 /// <summary>
 ///     Už jsem z toho blázen
 ///     Mám tu DictionaryHelper a DictionaryHelper se stejným obsahem
@@ -268,7 +269,7 @@ public partial class DictionaryHelper
 
     public static Dictionary<string, string> GetDictionaryByKeyValueInString(string p, params string[] d1)
     {
-        var sp = p.Split(d1, StringSplitOptions.RemoveEmptyEntries).ToList(); //SHSplit.SplitMore(p, d1);
+        var sp = p.Split(d1, StringSplitOptions.RemoveEmptyEntries).ToList(); //SHSplit.Split(p, d1);
         return GetDictionaryByKeyValueInString(sp);
     }
 
