@@ -320,7 +320,7 @@ public partial class DictionaryHelper
     }
 
 
-    public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dict, T t, U u)
+    public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dict, T t)
     {
         if (dict.ContainsKey(t)) return dict[t];
         return new List<U>();
@@ -454,9 +454,9 @@ public partial class DictionaryHelper
     /// </summary>
     /// <param name="array"></param>
     /// <param name="arrayIndex"></param>
-    public static void CopyTo<T, U>(Dictionary<T, U> _d, KeyValuePair<T, U>[] array, int arrayIndex)
+    public static void CopyTo<T, U>(Dictionary<T, U> _d, int arrayIndex)
     {
-        array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
+        var array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
 
         var i = 0;
         var add = false;
@@ -474,9 +474,9 @@ public partial class DictionaryHelper
         }
     }
 
-    public static void CopyTo<T, U>(List<KeyValuePair<T, U>> _d, KeyValuePair<T, U>[] array, int arrayIndex)
+    public static void CopyTo<T, U>(List<KeyValuePair<T, U>> _d, int arrayIndex)
     {
-        array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
+        var array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
 
         var i = 0;
         var add = false;
