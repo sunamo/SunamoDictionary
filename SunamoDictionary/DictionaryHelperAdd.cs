@@ -1,17 +1,20 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoDictionary;
 
 public partial class DictionaryHelper
 {
     [Obsolete("Vůbec nechápu smysl této metody")]
-    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
+    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 value)
     {
         if (qs.ContainsKey(k))
         {
-            //qs[k] = v;
+            //qs[k] = value;
         }
         else
         {
-            qs.Add(k, v);
+            qs.Add(k, value);
         }
     }
 
@@ -30,9 +33,9 @@ public partial class DictionaryHelper
             return qs[k];
         }
 
-        var v = i.Invoke(k);
-        qs.Add(k, v);
-        return v;
+        var value = i.Invoke(k);
+        qs.Add(k, value);
+        return value;
     }
 
     #region AddOrCreateTimeSpan
@@ -97,9 +100,9 @@ public partial class DictionaryHelper
         }
         else
         {
-            var d = new List<U>();
-            d.Add(value);
-            dict.Add(key, d);
+            var data = new List<U>();
+            data.Add(value);
+            dict.Add(key, data);
         }
     }
 
@@ -108,9 +111,9 @@ public partial class DictionaryHelper
     {
         if (!b64Images.ContainsKey(idApp))
         {
-            var r = base64ImagesOfApp(idApp);
-            b64Images.Add(idApp, r);
-            return r;
+            var result = base64ImagesOfApp(idApp);
+            b64Images.Add(idApp, result);
+            return result;
         }
 
         return b64Images[idApp];
@@ -280,15 +283,15 @@ public partial class DictionaryHelper
 
     #endregion
 
-    //public static void AddOrSet(Dictionary<string, string> qs, string k, string v)
+    //public static void AddOrSet(Dictionary<string, string> qs, string k, string value)
     //{
     //    if (qs.ContainsKey(k))
     //    {
-    //        qs[k] = v;
+    //        qs[k] = value;
     //    }
     //    else
     //    {
-    //        qs.Add(k, v);
+    //        qs.Add(k, value);
     //    }
     //}
 }

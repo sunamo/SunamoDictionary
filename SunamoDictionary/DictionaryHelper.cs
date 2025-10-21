@@ -1,11 +1,14 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoDictionary;
 
 /// <summary>
 ///     Už jsem z toho blázen
 ///     Mám tu DictionaryHelper a DictionaryHelper se stejným obsahem
-///     V jiných částech řešení se stále používá DictionaryHelper
+///     value jiných částech řešení se stále používá DictionaryHelper
 ///     Takhle jsem to chtěl, abych neimportoval WithDeps do jiných projektů
-///     Když jsem vyndal _sunamo a zkusil zkompilovat, deps chyběli v DictionaryHelper, 1x i v DictionaryHelperAdd
+///     Když jsem vyndal _sunamo a zkusil zkompilovat, deps chyběli value DictionaryHelper, 1x i value DictionaryHelperAdd
 /// </summary>
 public partial class DictionaryHelper
 {
@@ -59,15 +62,15 @@ public partial class DictionaryHelper
         return allParams;
     }
 
-    public static Dictionary<string, List<string>> CategoryParser(List<string> l, bool removeWhichHaveNoEntries)
+    public static Dictionary<string, List<string>> CategoryParser(List<string> list, bool removeWhichHaveNoEntries)
     {
         var ds = new Dictionary<string, List<string>>();
 
         List<string> lsToAdd = null;
 
-        for (var i = 0; i < l.Count; i++)
+        for (var i = 0; i < list.Count; i++)
         {
-            var item = l[i].Trim();
+            var item = list[i].Trim();
             if (item == string.Empty) continue;
             if (item.EndsWith(":"))
             {
@@ -96,23 +99,23 @@ public partial class DictionaryHelper
         var pairs = new Dictionary<T, int>();
         foreach (var item in streets) AddOrPlus(pairs, item, 1);
 
-        var v = pairs.OrderByDescending(d => d.Value);
-        var r = v.ToList();
-        return r;
+        var value = pairs.OrderByDescending(dictionary => dictionary.Value);
+        var result = value.ToList();
+        return result;
     }
 
-    public static object CreateTree(Dictionary<string, List<string>> d)
+    public static object CreateTree(Dictionary<string, List<string>> dictionary)
     {
         throw new Exception("Code without NTreeDictionary");
         //NTreeDictionary<string> t = new NTreeDic tionary<string>(string.Empty);
 
-        //foreach (var item in d)
+        //foreach (var item in dictionary)
         //{
         //    var child = t.AddChild(item.Key);
 
-        //    foreach (var v in item.Value)
+        //    foreach (var value in item.Value)
         //    {
-        //        child.AddChild(v);
+        //        child.AddChild(value);
         //    }
 
         //    child.children = new LinkedList<NTreeDictionary<string>>(child.children.Reverse());
@@ -122,24 +125,24 @@ public partial class DictionaryHelper
         //return t;
     }
 
-    public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> st, T v)
+    public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> st, T value)
     {
-        if (st.ContainsKey(v)) st.Remove(v);
+        if (st.ContainsKey(value)) st.Remove(value);
     }
 
     public static IList<string> GetIfExists(Dictionary<string, List<string>> filesInSolutionReal, string prefix,
-        string v, bool postfixWithA2)
+        string value, bool postfixWithA2)
     {
-        if (filesInSolutionReal.ContainsKey(v))
+        if (filesInSolutionReal.ContainsKey(value))
         {
-            var r = filesInSolutionReal[v];
+            var result = filesInSolutionReal[v];
             if (postfixWithA2)
             {
-                if (!string.IsNullOrEmpty(v)) r = CA.PostfixIfNotEnding(v, r);
-                CA.Prepend(prefix, r);
+                if (!string.IsNullOrEmpty(value)) result = CA.PostfixIfNotEnding(value, result);
+                CA.Prepend(prefix, result);
             }
 
-            return r;
+            return result;
         }
 
         return new List<string>();
@@ -275,24 +278,24 @@ public partial class DictionaryHelper
 
     public static Dictionary<U, T> SwitchKeyAndValue<T, U>(Dictionary<T, U> dictionary)
     {
-        var d = new Dictionary<U, T>(dictionary.Count);
-        foreach (var item in dictionary) d.Add(item.Value, item.Key);
-        return d;
+        var dictionary = new Dictionary<U, T>(dictionary.Count);
+        foreach (var item in dictionary) dictionary.Add(item.Value, item.Key);
+        return dictionary;
     }
 
 
     public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<int, T1> toAdd)
     {
-        var r = new Dictionary<IDItemType, T1>(toAdd.Count);
-        foreach (var item in toAdd) r.Add((IDItemType)(dynamic)item.Key, item.Value);
-        return r;
+        var result = new Dictionary<IDItemType, T1>(toAdd.Count);
+        foreach (var item in toAdd) result.Add((IDItemType)(dynamic)item.Key, item.Value);
+        return result;
     }
 
     public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<short, T1> toAdd)
     {
-        var r = new Dictionary<IDItemType, T1>(toAdd.Count);
-        foreach (var item in toAdd) r.Add((IDItemType)(dynamic)item.Key, item.Value);
-        return r;
+        var result = new Dictionary<IDItemType, T1>(toAdd.Count);
+        foreach (var item in toAdd) result.Add((IDItemType)(dynamic)item.Key, item.Value);
+        return result;
     }
 
     public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> p)
@@ -312,11 +315,11 @@ public partial class DictionaryHelper
         // Zde mus� b�t .Count
         ThrowEx.DifferentCountInLists("t1", t1.Count, "t2", t2.Count);
 
-        var l = new List<KeyValuePair<T1, T2>>();
+        var list = new List<KeyValuePair<T1, T2>>();
 
-        for (var i = 0; i < t1.Count; i++) l.Add(new KeyValuePair<T1, T2>(t1[i], t2[i]));
+        for (var i = 0; i < t1.Count; i++) list.Add(new KeyValuePair<T1, T2>(t1[i], t2[i]));
 
-        return GetDictionaryFromIList(l, addRandomWhenKeyExists);
+        return GetDictionaryFromIList(list, addRandomWhenKeyExists);
     }
 
 
@@ -332,7 +335,7 @@ public partial class DictionaryHelper
         return item2.ToString();
     }
 
-    public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dict, int v)
+    public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dict, int value)
     {
         var retur = new List<Dictionary<Key, Value>>();
         var ds = new Dictionary<Key, Value>();
@@ -340,7 +343,7 @@ public partial class DictionaryHelper
         foreach (var item in dict)
         {
             ds.Add(item.Key, item.Value);
-            if (ds.Count == v)
+            if (ds.Count == value)
             {
                 retur.Add(ds);
                 ds = new Dictionary<Key, Value>();
@@ -374,18 +377,18 @@ public partial class DictionaryHelper
     }
 
 
-    public static List<string> GetListStringFromDictionaryDateTimeInt(IOrderedEnumerable<KeyValuePair<DateTime, int>> d)
+    public static List<string> GetListStringFromDictionaryDateTimeInt(IOrderedEnumerable<KeyValuePair<DateTime, int>> dictionary)
     {
-        var vr = new List<string>(d.Count());
-        foreach (var item in d) vr.Add(item.Value.ToString());
+        var vr = new List<string>(dictionary.Count());
+        foreach (var item in dictionary) vr.Add(item.Value.ToString());
 
         return vr;
     }
 
-    public static List<string> GetListStringFromDictionaryIntInt(IOrderedEnumerable<KeyValuePair<int, int>> d)
+    public static List<string> GetListStringFromDictionaryIntInt(IOrderedEnumerable<KeyValuePair<int, int>> dictionary)
     {
-        var vr = new List<string>(d.Count());
-        foreach (var item in d) vr.Add(item.Value.ToString());
+        var vr = new List<string>(dictionary.Count());
+        foreach (var item in dictionary) vr.Add(item.Value.ToString());
 
         return vr;
     }
@@ -406,23 +409,23 @@ public partial class DictionaryHelper
     public static Dictionary<T1, T2> GetDictionaryFromIList<T1, T2>(List<KeyValuePair<T1, T2>> enumerable,
         bool addRandomWhenKeyExists = false)
     {
-        var d = new Dictionary<T1, T2>();
+        var dictionary = new Dictionary<T1, T2>();
         foreach (var item in enumerable)
         {
             var key = item.Key;
 
-            var c = d.ContainsKey(item.Key);
-            if (c)
+            var count = dictionary.ContainsKey(item.Key);
+            if (count)
                 if (addRandomWhenKeyExists)
                 {
                     var k = key + " " + RandomHelper.RandomString(5);
                     key = (T1)(dynamic)k;
                 }
 
-            d.Add(key, item.Value);
+            dictionary.Add(key, item.Value);
         }
 
-        return d;
+        return dictionary;
     }
 
 
@@ -437,12 +440,12 @@ public partial class DictionaryHelper
     /// <param name="qs"></param>
     /// <param name="k"></param>
     /// <param name="v"></param>
-    public static void AddOrSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 v)
+    public static void AddOrSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 value)
     {
         if (qs.ContainsKey(k))
-            qs[k] = v;
+            qs[k] = value;
         else
-            qs.Add(k, v);
+            qs.Add(k, value);
     }
 
     #endregion
