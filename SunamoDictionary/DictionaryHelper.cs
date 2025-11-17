@@ -135,7 +135,7 @@ public partial class DictionaryHelper
     {
         if (filesInSolutionReal.ContainsKey(value))
         {
-            var result = filesInSolutionReal[v];
+            var result = filesInSolutionReal[value];
             if (postfixWithA2)
             {
                 if (!string.IsNullOrEmpty(value)) result = CA.PostfixIfNotEnding(value, result);
@@ -278,9 +278,9 @@ public partial class DictionaryHelper
 
     public static Dictionary<U, T> SwitchKeyAndValue<T, U>(Dictionary<T, U> dictionary)
     {
-        var dictionary = new Dictionary<U, T>(dictionary.Count);
-        foreach (var item in dictionary) dictionary.Add(item.Value, item.Key);
-        return dictionary;
+        var result = new Dictionary<U, T>(dictionary.Count);
+        foreach (var item in dictionary) result.Add(item.Value, item.Key);
+        return result;
     }
 
 
