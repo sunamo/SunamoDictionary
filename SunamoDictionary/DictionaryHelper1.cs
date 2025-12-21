@@ -1,6 +1,7 @@
+namespace SunamoDictionary;
+
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-namespace SunamoDictionary;
 /// <summary>
 ///     Už jsem z toho blázen
 ///     Mám tu DictionaryHelper a DictionaryHelper se stejným obsahem
