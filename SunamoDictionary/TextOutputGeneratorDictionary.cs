@@ -2,7 +2,7 @@ namespace SunamoDictionary;
 
 public class TextOutputGeneratorDictionary
 {
-    public void AppendLine(object s)
+    public void AppendLine(object value)
     {
         throw new NotImplementedException();
     }

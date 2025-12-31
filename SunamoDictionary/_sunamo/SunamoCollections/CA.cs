@@ -3,25 +3,25 @@ namespace SunamoDictionary._sunamo.SunamoCollections;
 internal class CA
 {
 
-    internal static List<string> PostfixIfNotEnding(string pre, List<string> l)
+    internal static List<string> PostfixIfNotEnding(string prefix, List<string> list)
     {
-        for (int i = 0; i < l.Count; i++)
+        for (int i = 0; i < list.Count; i++)
         {
-            l[i] = pre + l[i];
+            list[i] = prefix + list[i];
         }
-        return l;
+        return list;
     }
 
 
-    internal static List<string> Prepend(string v, List<string> toReplace)
+    internal static List<string> Prepend(string prefix, List<string> list)
     {
-        for (int i = 0; i < toReplace.Count; i++)
+        for (int i = 0; i < list.Count; i++)
         {
-            if (!toReplace[i].StartsWith(v))
+            if (!list[i].StartsWith(prefix))
             {
-                toReplace[i] = v + toReplace[i];
+                list[i] = prefix + list[i];
             }
         }
-        return toReplace;
+        return list;
     }
 }

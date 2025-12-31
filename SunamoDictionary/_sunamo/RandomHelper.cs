@@ -1,7 +1,5 @@
 namespace SunamoDictionary._sunamo;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 internal class RandomHelper
 {
     internal static string RandomString(int length)
@@ -9,6 +7,6 @@ internal class RandomHelper
         Random random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
+            .Select(charSet => charSet[random.Next(charSet.Length)]).ToArray());
     }
 }

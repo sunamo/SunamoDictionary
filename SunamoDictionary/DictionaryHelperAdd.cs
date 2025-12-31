@@ -3,15 +3,15 @@ namespace SunamoDictionary;
 public partial class DictionaryHelper
 {
     [Obsolete("Vůbec nechápu smysl této metody")]
-    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 value)
+    public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, T2 value)
     {
-        if (qs.ContainsKey(k))
+        if (dictionary.ContainsKey(key))
         {
-            //qs[k] = value;
+            //dictionary[key] = value;
         }
         else
         {
-            qs.Add(k, value);
+            dictionary.Add(key, value);
         }
     }
 
@@ -19,36 +19,36 @@ public partial class DictionaryHelper
     /// </summary>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <param name="qs"></param>
-    /// <param name="k"></param>
-    /// <param name="i"></param>
+    /// <param name="dictionary"></param>
+    /// <param name="key"></param>
+    /// <param name="valueFactory"></param>
     /// <returns></returns>
-    public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> qs, T1 k, Func<T1, T2> i)
+    public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, Func<T1, T2> valueFactory)
     {
-        if (qs.ContainsKey(k))
+        if (dictionary.ContainsKey(key))
         {
-            return qs[k];
+            return dictionary[key];
         }
 
-        var value = i.Invoke(k);
-        qs.Add(k, value);
+        var value = valueFactory.Invoke(key);
+        dictionary.Add(key, value);
         return value;
     }
 
     #region AddOrCreateTimeSpan
 
-    public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, DateTime value)
+    public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> dictionary, Key key, DateTime value)
     {
-        var ts = TimeSpan.FromTicks(value.Ticks);
-        AddOrCreateTimeSpan(sl, key, ts);
+        var timeSpan = TimeSpan.FromTicks(value.Ticks);
+        AddOrCreateTimeSpan(dictionary, key, timeSpan);
     }
 
-    public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> sl, Key key, TimeSpan value)
+    public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> dictionary, Key key, TimeSpan value)
     {
-        if (sl.ContainsKey(key))
-            sl[key] = sl[key].Add(value);
+        if (dictionary.ContainsKey(key))
+            dictionary[key] = dictionary[key].Add(value);
         else
-            sl.Add(key, value);
+            dictionary.Add(key, value);
     }
 
     #endregion
@@ -60,106 +60,106 @@ public partial class DictionaryHelper
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="U"></typeparam>
-    /// <param name="l"></param>
-    /// <param name="item"></param>
+    /// <param name="dictionary"></param>
+    /// <param name="key"></param>
     /// <param name="toReplace"></param>
     /// <param name="throwExIfNotContains"></param>
-    public static void AddToNewDictionary<T, U>(Dictionary<T, U> l, T item, Dictionary<T, U> toReplace,
-        bool throwExIfNotContains = true)
+    public static void AddToNewDictionary<T, U>(Dictionary<T, U> dictionary, T key, Dictionary<T, U> toReplace,
+        bool shouldThrowExIfNotContains = true)
     {
-        if (l.ContainsKey(item))
+        if (dictionary.ContainsKey(key))
         {
-            if (!toReplace.ContainsKey(item)) toReplace.Add(item, l[item]);
+            if (!toReplace.ContainsKey(key)) toReplace.Add(key, dictionary[key]);
         }
         else
         {
-            if (throwExIfNotContains) ThrowEx.KeyNotFound(l, nameof(l), item);
+            if (shouldThrowExIfNotContains) ThrowEx.KeyNotFound(dictionary, nameof(dictionary), key);
         }
     }
 
 
-    public static int AddToIndexAndReturnIncrementedInt<T>(int i, Dictionary<int, T> colors, T colorOnWeb)
+    public static int AddToIndexAndReturnIncrementedInt<T>(int index, Dictionary<int, T> dictionary, T value)
     {
-        colors.Add(i, colorOnWeb);
-        i++;
-        return i;
+        dictionary.Add(index, value);
+        index++;
+        return index;
     }
 
     #endregion
 
     #region AddOrCreate
 
-    public static void AddOrCreate<T, U>(Dictionary<T, List<U>> dict, T key, U value)
+    public static void AddOrCreate<T, U>(Dictionary<T, List<U>> dictionary, T key, U value)
     {
-        if (dict.ContainsKey(key))
+        if (dictionary.ContainsKey(key))
         {
-            dict[key].Add(value);
+            dictionary[key].Add(value);
         }
         else
         {
-            var data = new List<U>();
-            data.Add(value);
-            dict.Add(key, data);
+            var valueList = new List<U>();
+            valueList.Add(value);
+            dictionary.Add(key, valueList);
         }
     }
 
-    public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> b64Images, T1 idApp,
-        Func<T1, List<T2>> base64ImagesOfApp)
+    public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> dictionary, T1 key,
+        Func<T1, List<T2>> valueFactory)
     {
-        if (!b64Images.ContainsKey(idApp))
+        if (!dictionary.ContainsKey(key))
         {
-            var result = base64ImagesOfApp(idApp);
-            b64Images.Add(idApp, result);
+            var result = valueFactory(key);
+            dictionary.Add(key, result);
             return result;
         }
 
-        return b64Images[idApp];
+        return dictionary[key];
     }
 
-    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, List<Value> values,
-        bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> dictionary, Key key, List<Value> values,
+        bool shouldPreventDuplicities = false, Dictionary<Key, List<string>> stringDictionary = null)
     {
-        foreach (var value in values) AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
+        foreach (var value in values) AddOrCreate<Key, Value, object>(dictionary, key, value, shouldPreventDuplicities, stringDictionary);
     }
 
     #region AddOrCreate když key i value není list
 
     /// <summary>
     ///     A3 is inner type of collection entries
-    ///     dictS => is comparing with string
+    ///     stringDictionary => is comparing with string
     ///     As inner must be List, not IList etc.
     ///     From outside is not possible as inner use other class based on IList
     /// </summary>
     /// <typeparam name="Key"></typeparam>
     /// <typeparam name="Value"></typeparam>
     /// <typeparam name="ColType"></typeparam>
-    /// <param name="sl"></param>
+    /// <param name="dictionary"></param>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dict, Key key, Value value,
-        bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dictionary, Key key, Value value,
+        bool shouldPreventDuplicities = false, Dictionary<Key, List<string>> stringDictionary = null)
     {
-        var compWithString = false;
-        if (dictS != null) compWithString = true;
+        var shouldCompareWithString = false;
+        if (stringDictionary != null) shouldCompareWithString = true;
 
         if (key is IList && typeof(ColType) != typeof(object))
         {
-            var keyE = key as IList<ColType>;
-            var contains = false;
-            foreach (var item in dict)
+            var currentKey = key as IList<ColType>;
+            var keyExists = false;
+            foreach (var item in dictionary)
             {
-                var keyD = item.Key as IList<ColType>;
-                if (keyD.SequenceEqual(keyE)) contains = true;
+                var existingKey = item.Key as IList<ColType>;
+                if (existingKey.SequenceEqual(currentKey)) keyExists = true;
             }
 
-            if (contains)
+            if (keyExists)
             {
-                foreach (var item in dict)
+                foreach (var item in dictionary)
                 {
-                    var keyD = item.Key as IList<ColType>;
-                    if (keyD.SequenceEqual(keyE))
+                    var existingKey = item.Key as IList<ColType>;
+                    if (existingKey.SequenceEqual(currentKey))
                     {
-                        if (withoutDuplicitiesInValue)
+                        if (shouldPreventDuplicities)
                             if (item.Value.Contains(value))
                                 return;
                         item.Value.Add(value);
@@ -168,72 +168,72 @@ public partial class DictionaryHelper
             }
             else
             {
-                List<Value> ad = new();
-                ad.Add(value);
-                dict.Add(key, ad);
+                List<Value> valueList = new();
+                valueList.Add(value);
+                dictionary.Add(key, valueList);
 
-                if (compWithString)
+                if (shouldCompareWithString)
                 {
-                    List<string> ad2 = new();
-                    ad2.Add(value.ToString());
-                    dictS.Add(key, ad2);
+                    List<string> stringList = new();
+                    stringList.Add(value.ToString());
+                    stringDictionary.Add(key, stringList);
                 }
             }
         }
         else
         {
-            var add = true;
-            lock (dict)
+            var shouldAdd = true;
+            lock (dictionary)
             {
-                if (dict.ContainsKey(key))
+                if (dictionary.ContainsKey(key))
                 {
-                    if (withoutDuplicitiesInValue)
+                    if (shouldPreventDuplicities)
                     {
-                        if (dict[key].Contains(value))
-                            add = false;
-                        else if (compWithString)
-                            if (dictS[key].Contains(value.ToString()))
-                                add = false;
+                        if (dictionary[key].Contains(value))
+                            shouldAdd = false;
+                        else if (shouldCompareWithString)
+                            if (stringDictionary[key].Contains(value.ToString()))
+                                shouldAdd = false;
                     }
 
-                    if (add)
+                    if (shouldAdd)
                     {
-                        var val = dict[key];
+                        var valueList = dictionary[key];
 
-                        if (val != null) val.Add(value);
+                        if (valueList != null) valueList.Add(value);
 
-                        if (compWithString)
+                        if (shouldCompareWithString)
                         {
-                            var val2 = dictS[key];
+                            var stringList = stringDictionary[key];
 
-                            if (val != null) val2.Add(value.ToString());
+                            if (valueList != null) stringList.Add(value.ToString());
                         }
                     }
                 }
                 else
                 {
-                    if (!dict.ContainsKey(key))
+                    if (!dictionary.ContainsKey(key))
                     {
-                        List<Value> ad = new();
-                        ad.Add(value);
-                        dict.Add(key, ad);
+                        List<Value> valueList = new();
+                        valueList.Add(value);
+                        dictionary.Add(key, valueList);
                     }
                     else
                     {
-                        dict[key].Add(value);
+                        dictionary[key].Add(value);
                     }
 
-                    if (compWithString)
+                    if (shouldCompareWithString)
                     {
-                        if (!dictS.ContainsKey(key))
+                        if (!stringDictionary.ContainsKey(key))
                         {
-                            List<string> ad2 = new();
-                            ad2.Add(value.ToString());
-                            dictS.Add(key, ad2);
+                            List<string> stringList = new();
+                            stringList.Add(value.ToString());
+                            stringDictionary.Add(key, stringList);
                         }
                         else
                         {
-                            dictS[key].Add(value.ToString());
+                            stringDictionary[key].Add(value.ToString());
                         }
                     }
                 }
@@ -247,13 +247,13 @@ public partial class DictionaryHelper
     /// </summary>
     /// <typeparam name="Key"></typeparam>
     /// <typeparam name="Value"></typeparam>
-    /// <param name="sl"></param>
+    /// <param name="dictionary"></param>
     /// <param name="key"></param>
-    /// <param name="p"></param>
-    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> sl, Key key, Value value,
-        bool withoutDuplicitiesInValue = false, Dictionary<Key, List<string>> dictS = null)
+    /// <param name="value"></param>
+    public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> dictionary, Key key, Value value,
+        bool shouldPreventDuplicities = false, Dictionary<Key, List<string>> stringDictionary = null)
     {
-        AddOrCreate<Key, Value, object>(sl, key, value, withoutDuplicitiesInValue, dictS);
+        AddOrCreate<Key, Value, object>(dictionary, key, value, shouldPreventDuplicities, stringDictionary);
     }
 
     #endregion
@@ -262,20 +262,20 @@ public partial class DictionaryHelper
 
     #region AddOrPlus
 
-    public static void AddOrPlus<T>(Dictionary<T, int> sl, T key, int p)
+    public static void AddOrPlus<T>(Dictionary<T, int> dictionary, T key, int increment)
     {
-        if (sl.ContainsKey(key))
-            sl[key] += p;
+        if (dictionary.ContainsKey(key))
+            dictionary[key] += increment;
         else
-            sl.Add(key, p);
+            dictionary.Add(key, increment);
     }
 
-    public static void AddOrPlus<T>(Dictionary<T, long> sl, T key, long p)
+    public static void AddOrPlus<T>(Dictionary<T, long> dictionary, T key, long increment)
     {
-        if (sl.ContainsKey(key))
-            sl[key] += p;
+        if (dictionary.ContainsKey(key))
+            dictionary[key] += increment;
         else
-            sl.Add(key, p);
+            dictionary.Add(key, increment);
     }
 
     #endregion

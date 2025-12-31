@@ -1,7 +1,5 @@
 namespace SunamoDictionary;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
 ///     Už jsem z toho blázen
 ///     Mám tu DictionaryHelper a DictionaryHelper se stejným obsahem
@@ -11,10 +9,10 @@ namespace SunamoDictionary;
 /// </summary>
 public partial class DictionaryHelper
 {
-    public static Dictionary<string, string> GetDictionaryByKeyValueInString(string p, params string[] d1)
+    public static Dictionary<string, string> GetDictionaryByKeyValueInString(string text, params string[] delimiters)
     {
-        var sp = p.Split(d1, StringSplitOptions.RemoveEmptyEntries).ToList(); //SHSplit.Split(p, d1);
-        return GetDictionaryByKeyValueInString(sp);
+        var parts = text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).ToList(); //SHSplit.Split(text, delimiters);
+        return GetDictionaryByKeyValueInString(parts);
     }
 
     public static Dictionary<U, T> SwitchKeyAndValue<T, U>(Dictionary<T, U> dictionary)
@@ -25,107 +23,107 @@ public partial class DictionaryHelper
         return result;
     }
 
-    public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<int, T1> toAdd)
+    public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<int, T1> dictionary)
     {
-        var result = new Dictionary<IDItemType, T1>(toAdd.Count);
-        foreach (var item in toAdd)
+        var result = new Dictionary<IDItemType, T1>(dictionary.Count);
+        foreach (var item in dictionary)
             result.Add((IDItemType)(dynamic)item.Key, item.Value);
         return result;
     }
 
-    public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<short, T1> toAdd)
+    public static Dictionary<IDItemType, T1> ChangeTypeOfKey<IDItemType, T1>(Dictionary<short, T1> dictionary)
     {
-        var result = new Dictionary<IDItemType, T1>(toAdd.Count);
-        foreach (var item in toAdd)
+        var result = new Dictionary<IDItemType, T1>(dictionary.Count);
+        foreach (var item in dictionary)
             result.Add((IDItemType)(dynamic)item.Key, item.Value);
         return result;
     }
 
-    public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> p)
+    public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> list)
     {
         var methodName = Exceptions.CallingMethod();
-        ThrowEx.HasOddNumberOfElements("p", p);
+        ThrowEx.HasOddNumberOfElements("list", list);
         var result = new Dictionary<T, T>();
-        for (var i = 0; i < p.Count; i++)
-            result.Add(p[i], p[++i]);
+        for (var i = 0; i < list.Count; i++)
+            result.Add(list[i], list[++i]);
         return result;
     }
 
-    public static Dictionary<T1, T2> GetDictionaryFromTwoList<T1, T2>(List<T1> t1, List<T2> t2, bool addRandomWhenKeyExists = false)
+    public static Dictionary<T1, T2> GetDictionaryFromTwoList<T1, T2>(List<T1> firstList, List<T2> secondList, bool shouldAddRandomWhenKeyExists = false)
     {
         // Zde mus� b�t .Count
-        ThrowEx.DifferentCountInLists("t1", t1.Count, "t2", t2.Count);
+        ThrowEx.DifferentCountInLists("firstList", firstList.Count, "secondList", secondList.Count);
         var list = new List<KeyValuePair<T1, T2>>();
-        for (var i = 0; i < t1.Count; i++)
-            list.Add(new KeyValuePair<T1, T2>(t1[i], t2[i]));
-        return GetDictionaryFromIList(list, addRandomWhenKeyExists);
+        for (var i = 0; i < firstList.Count; i++)
+            list.Add(new KeyValuePair<T1, T2>(firstList[i], secondList[i]));
+        return GetDictionaryFromIList(list, shouldAddRandomWhenKeyExists);
     }
 
-    public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dict, T t)
+    public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dictionary, T key)
     {
-        if (dict.ContainsKey(t))
-            return dict[t];
+        if (dictionary.ContainsKey(key))
+            return dictionary[key];
         return new List<U>();
     }
 
-    public static string GetOrKey<T>(Dictionary<T, string> a, T item2)
+    public static string GetOrKey<T>(Dictionary<T, string> dictionary, T key)
     {
-        if (a.ContainsKey(item2))
-            return a[item2];
-        return item2.ToString();
+        if (dictionary.ContainsKey(key))
+            return dictionary[key];
+        return key.ToString();
     }
 
-    public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dict, int value)
+    public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dictionary, int chunkSize)
     {
-        var retur = new List<Dictionary<Key, Value>>();
-        var ds = new Dictionary<Key, Value>();
-        foreach (var item in dict)
+        var result = new List<Dictionary<Key, Value>>();
+        var currentDictionary = new Dictionary<Key, Value>();
+        foreach (var item in dictionary)
         {
-            ds.Add(item.Key, item.Value);
-            if (ds.Count == value)
+            currentDictionary.Add(item.Key, item.Value);
+            if (currentDictionary.Count == chunkSize)
             {
-                retur.Add(ds);
-                ds = new Dictionary<Key, Value>();
+                result.Add(currentDictionary);
+                currentDictionary = new Dictionary<Key, Value>();
             }
         }
 
-        if (ds.Count > 0)
-            retur.Add(ds);
-        return retur;
+        if (currentDictionary.Count > 0)
+            result.Add(currentDictionary);
+        return result;
     }
 
-    public static Dictionary<T1, T2> CloneDictionary<T1, T2>(Dictionary<T1, T2> filesWithTranslation)
+    public static Dictionary<T1, T2> CloneDictionary<T1, T2>(Dictionary<T1, T2> dictionary)
     {
-        var newDictionary = filesWithTranslation.ToDictionary(entry => entry.Key, entry => entry.Value);
+        var newDictionary = dictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
         return newDictionary;
     }
 
-    public static List<string> GetListStringFromDictionary(Dictionary<string, string> p)
+    public static List<string> GetListStringFromDictionary(Dictionary<string, string> dictionary)
     {
-        var vr = new List<string>();
-        foreach (var item in p)
+        var result = new List<string>();
+        foreach (var item in dictionary)
         {
-            vr.Add(item.Key);
-            vr.Add(item.Value);
+            result.Add(item.Key);
+            result.Add(item.Value);
         }
 
-        return vr;
+        return result;
     }
 
     public static List<string> GetListStringFromDictionaryDateTimeInt(IOrderedEnumerable<KeyValuePair<DateTime, int>> dictionary)
     {
-        var vr = new List<string>(dictionary.Count());
+        var result = new List<string>(dictionary.Count());
         foreach (var item in dictionary)
-            vr.Add(item.Value.ToString());
-        return vr;
+            result.Add(item.Value.ToString());
+        return result;
     }
 
     public static List<string> GetListStringFromDictionaryIntInt(IOrderedEnumerable<KeyValuePair<int, int>> dictionary)
     {
-        var vr = new List<string>(dictionary.Count());
+        var result = new List<string>(dictionary.Count());
         foreach (var item in dictionary)
-            vr.Add(item.Value.ToString());
-        return vr;
+            result.Add(item.Value.ToString());
+        return result;
     }
 
     public static Dictionary<T1, T2> GetDictionaryFromIOrderedEnumerable<T1, T2>(IOrderedEnumerable<KeyValuePair<T1, T2>> orderedEnumerable)
@@ -138,18 +136,18 @@ public partial class DictionaryHelper
         return GetDictionaryFromIList(orderedEnumerable.ToList());
     }
 
-    public static Dictionary<T1, T2> GetDictionaryFromIList<T1, T2>(List<KeyValuePair<T1, T2>> enumerable, bool addRandomWhenKeyExists = false)
+    public static Dictionary<T1, T2> GetDictionaryFromIList<T1, T2>(List<KeyValuePair<T1, T2>> list, bool shouldAddRandomWhenKeyExists = false)
     {
         var dictionary = new Dictionary<T1, T2>();
-        foreach (var item in enumerable)
+        foreach (var item in list)
         {
             var key = item.Key;
-            var count = dictionary.ContainsKey(item.Key);
-            if (count)
-                if (addRandomWhenKeyExists)
+            var keyExists = dictionary.ContainsKey(item.Key);
+            if (keyExists)
+                if (shouldAddRandomWhenKeyExists)
                 {
-                    var k = key + " " + RandomHelper.RandomString(5);
-                    key = (T1)(dynamic)k;
+                    var randomSuffix = key + " " + RandomHelper.RandomString(5);
+                    key = (T1)(dynamic)randomSuffix;
                 }
 
             dictionary.Add(key, item.Value);
@@ -164,15 +162,15 @@ public partial class DictionaryHelper
     /// </summary>
     /// <typeparam name = "T1"></typeparam>
     /// <typeparam name = "T2"></typeparam>
-    /// <param name = "qs"></param>
-    /// <param name = "k"></param>
-    /// <param name = "v"></param>
-    public static void AddOrSet<T1, T2>(IDictionary<T1, T2> qs, T1 k, T2 value)
+    /// <param name = "dictionary"></param>
+    /// <param name = "key"></param>
+    /// <param name = "value"></param>
+    public static void AddOrSet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, T2 value)
     {
-        if (qs.ContainsKey(k))
-            qs[k] = value;
+        if (dictionary.ContainsKey(key))
+            dictionary[key] = value;
         else
-            qs.Add(k, value);
+            dictionary.Add(key, value);
     }
 
     /// <summary>
@@ -180,41 +178,41 @@ public partial class DictionaryHelper
     /// </summary>
     /// <param name = "array"></param>
     /// <param name = "arrayIndex"></param>
-    public static void CopyTo<T, U>(Dictionary<T, U> _d, int arrayIndex)
+    public static void CopyTo<T, U>(Dictionary<T, U> dictionary, int arrayIndex)
     {
-        var array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
-        var i = 0;
-        var add = false;
-        foreach (var item in _d)
+        var array = new KeyValuePair<T, U>[dictionary.Count - arrayIndex + 1];
+        var currentIndex = 0;
+        var shouldAdd = false;
+        foreach (var item in dictionary)
         {
-            if (i == arrayIndex && !add)
+            if (currentIndex == arrayIndex && !shouldAdd)
             {
-                add = true;
-                i = 0;
+                shouldAdd = true;
+                currentIndex = 0;
             }
 
-            if (add)
-                array[i] = new KeyValuePair<T, U>(item.Key, item.Value);
-            i++;
+            if (shouldAdd)
+                array[currentIndex] = new KeyValuePair<T, U>(item.Key, item.Value);
+            currentIndex++;
         }
     }
 
-    public static void CopyTo<T, U>(List<KeyValuePair<T, U>> _d, int arrayIndex)
+    public static void CopyTo<T, U>(List<KeyValuePair<T, U>> list, int arrayIndex)
     {
-        var array = new KeyValuePair<T, U>[_d.Count - arrayIndex + 1];
-        var i = 0;
-        var add = false;
-        foreach (var item in _d)
+        var array = new KeyValuePair<T, U>[list.Count - arrayIndex + 1];
+        var currentIndex = 0;
+        var shouldAdd = false;
+        foreach (var item in list)
         {
-            if (i == arrayIndex && !add)
+            if (currentIndex == arrayIndex && !shouldAdd)
             {
-                add = true;
-                i = 0;
+                shouldAdd = true;
+                currentIndex = 0;
             }
 
-            if (add)
-                array[i] = new KeyValuePair<T, U>(item.Key, item.Value);
-            i++;
+            if (shouldAdd)
+                array[currentIndex] = new KeyValuePair<T, U>(item.Key, item.Value);
+            currentIndex++;
         }
     }
 }

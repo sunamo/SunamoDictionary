@@ -1,7 +1,5 @@
 namespace SunamoDictionary;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
 ///     Už jsem z toho blázen
 ///     Mám tu DictionaryHelper a DictionaryHelper se stejným obsahem
@@ -11,40 +9,39 @@ namespace SunamoDictionary;
 /// </summary>
 public partial class DictionaryHelper
 {
-    private static Type type = typeof(DictionaryHelper);
     /// <summary>
     ///     In addition to method AddOrCreate, more is checking whether value in collection does not exists
     /// </summary>
     /// <typeparam name = "Key"></typeparam>
     /// <typeparam name = "Value"></typeparam>
-    /// <param name = "sl"></param>
+    /// <param name = "dictionary"></param>
     /// <param name = "key"></param>
     /// <param name = "value"></param>
-    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> sl, Key key, Value value)
+    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> dictionary, Key key, Value value)
     {
-        if (sl.ContainsKey(key))
+        if (dictionary.ContainsKey(key))
         {
-            if (!sl[key].Contains(value))
-                sl[key].Add(value);
+            if (!dictionary[key].Contains(value))
+                dictionary[key].Add(value);
         }
         else
         {
-            var ad = new List<Value>();
-            ad.Add(value);
-            sl.Add(key, ad);
+            var valueList = new List<Value>();
+            valueList.Add(value);
+            dictionary.Add(key, valueList);
         }
     }
 
-    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dict, object tog)
+    public static string CalculateMedianAverageFloat(Dictionary<string, List<float>> dictionary, object textOutputGenerator)
     {
         throw new Exception("Deps methods, MedianAverage<T> etc.");
-    //foreach (var item in dict)
+    //foreach (var item in dictionary)
     //{
-    //    tog.Header(item.Key);
+    //    textOutputGenerator.Header(item.Key);
     //    var (s, ma) = NH.CalculateMedianAverageNoOut(item.Value);
-    //    tog.AppendLine(s);
+    //    textOutputGenerator.AppendLine(s);
     //}
-    //return tog.ToString();
+    //return textOutputGenerator.ToString();
     }
 
     public static Dictionary<string, string> KeepOnlyKeys(Dictionary<string, string> allParams, List<string> includeAlways)
@@ -55,10 +52,10 @@ public partial class DictionaryHelper
         return allParams;
     }
 
-    public static Dictionary<string, List<string>> CategoryParser(List<string> list, bool removeWhichHaveNoEntries)
+    public static Dictionary<string, List<string>> CategoryParser(List<string> list, bool shouldRemoveWhichHaveNoEntries)
     {
-        var ds = new Dictionary<string, List<string>>();
-        List<string> lsToAdd = null;
+        var result = new Dictionary<string, List<string>>();
+        List<string> currentEntries = null;
         for (var i = 0; i < list.Count; i++)
         {
             var item = list[i].Trim();
@@ -66,33 +63,33 @@ public partial class DictionaryHelper
                 continue;
             if (item.EndsWith(":"))
             {
-                lsToAdd = new List<string>();
-                ds.Add(item.TrimEnd(':'), lsToAdd);
+                currentEntries = new List<string>();
+                result.Add(item.TrimEnd(':'), currentEntries);
             }
             else
             {
-                lsToAdd.Add(item);
+                currentEntries.Add(item);
             }
         }
 
-        if (removeWhichHaveNoEntries)
-            for (var i = ds.Keys.Count - 1; i >= 0; i--)
+        if (shouldRemoveWhichHaveNoEntries)
+            for (var i = result.Keys.Count - 1; i >= 0; i--)
             {
-                var key = ds.ElementAt(i).Key;
-                if (ds[key][0] == "No entries")
-                    ds.Remove(key);
+                var key = result.ElementAt(i).Key;
+                if (result[key][0] == "No entries")
+                    result.Remove(key);
             }
 
-        return ds;
+        return result;
     }
 
-    public static List<KeyValuePair<T, int>> CountOfItems<T>(List<T> streets)
+    public static List<KeyValuePair<T, int>> CountOfItems<T>(List<T> items)
     {
         var pairs = new Dictionary<T, int>();
-        foreach (var item in streets)
+        foreach (var item in items)
             AddOrPlus(pairs, item, 1);
-        var value = pairs.OrderByDescending(dictionary => dictionary.Value);
-        var result = value.ToList();
+        var orderedPairs = pairs.OrderByDescending(dictionary => dictionary.Value);
+        var result = orderedPairs.ToList();
         return result;
     }
 
@@ -112,21 +109,21 @@ public partial class DictionaryHelper
     //return t;
     }
 
-    public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> st, T value)
+    public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> dictionary, T key)
     {
-        if (st.ContainsKey(value))
-            st.Remove(value);
+        if (dictionary.ContainsKey(key))
+            dictionary.Remove(key);
     }
 
-    public static IList<string> GetIfExists(Dictionary<string, List<string>> filesInSolutionReal, string prefix, string value, bool postfixWithA2)
+    public static IList<string> GetIfExists(Dictionary<string, List<string>> dictionary, string prefix, string key, bool shouldAddPrefixAndSuffix)
     {
-        if (filesInSolutionReal.ContainsKey(value))
+        if (dictionary.ContainsKey(key))
         {
-            var result = filesInSolutionReal[value];
-            if (postfixWithA2)
+            var result = dictionary[key];
+            if (shouldAddPrefixAndSuffix)
             {
-                if (!string.IsNullOrEmpty(value))
-                    result = CA.PostfixIfNotEnding(value, result);
+                if (!string.IsNullOrEmpty(key))
+                    result = CA.PostfixIfNotEnding(key, result);
                 CA.Prepend(prefix, result);
             }
 
@@ -144,24 +141,24 @@ public partial class DictionaryHelper
         return result;
     }
 
-    public static List<T2> AggregateValues<T1, T2>(Dictionary<T2, List<T2>> lowCostNotFoundEurope)
+    public static List<T2> AggregateValues<T1, T2>(Dictionary<T2, List<T2>> dictionary)
     {
         var result = new List<T2>();
-        foreach (var lcCountry in lowCostNotFoundEurope)
-            result.AddRange(lcCountry.Value);
+        foreach (var entry in dictionary)
+            result.AddRange(entry.Value);
         return result;
     }
 
     /// <summary>
     ///     Return p1 if exists key A2 with value no equal to A3
     /// </summary>
-    /// <param name = "g"></param>
-    private T FindIndexOfValue<T, U>(Dictionary<T, U> g, U p1, T p2)
+    /// <param name = "dictionary"></param>
+    private T FindIndexOfValue<T, U>(Dictionary<T, U> dictionary, U targetValue, T comparisonKey)
     {
         throw new Exception("RUn without ComparerConsts");
-    //foreach (KeyValuePair<T, U> var in g)
+    //foreach (KeyValuePair<T, U> var in dictionary)
     //{
-    //    if (Comparer<U>.Default.Compare(var.Value, p1) == ComparerConsts.Higher && Comparer<T>.Default.Compare(var.Key, p2) == ComparerConsts.Lower)
+    //    if (Comparer<U>.Default.Compare(var.Value, targetValue) == ComparerConsts.Higher && Comparer<T>.Default.Compare(var.Key, comparisonKey) == ComparerConsts.Lower)
     //    {
     //        return var.Key;
     //    }
@@ -169,12 +166,12 @@ public partial class DictionaryHelper
     //return default(T);
     }
 
-    public static Dictionary<T, U> ReturnsCopy<T, U>(Dictionary<T, U> slovnik)
+    public static Dictionary<T, U> ReturnsCopy<T, U>(Dictionary<T, U> dictionary)
     {
-        var tu = new Dictionary<T, U>();
-        foreach (var item in slovnik)
-            tu.Add(item.Key, item.Value);
-        return tu;
+        var result = new Dictionary<T, U>();
+        foreach (var item in dictionary)
+            result.Add(item.Key, item.Value);
+        return result;
     }
 
     /// <summary>
@@ -182,21 +179,21 @@ public partial class DictionaryHelper
     /// </summary>
     /// <typeparam name = "T1"></typeparam>
     /// <typeparam name = "T2"></typeparam>
-    /// <param name = "airPlaneCompanies"></param>
-    /// <param name = "twoTimes"></param>
+    /// <param name = "dictionary"></param>
+    /// <param name = "duplicates"></param>
     /// <returns></returns>
-    public static Dictionary<T1, T2> RemoveDuplicatedFromDictionaryByValues<T1, T2>(Dictionary<T1, T2> airPlaneCompanies, Dictionary<T1, T2> twoTimes)
+    public static Dictionary<T1, T2> RemoveDuplicatedFromDictionaryByValues<T1, T2>(Dictionary<T1, T2> dictionary, Dictionary<T1, T2> duplicates)
     {
-        //twoTimes = new Dictionary<T1, T2>();
+        //duplicates = new Dictionary<T1, T2>();
         var processed = new List<T2>();
-        foreach (var item in airPlaneCompanies.Keys.ToList())
+        foreach (var item in dictionary.Keys.ToList())
         {
-            var value = airPlaneCompanies[item];
+            var value = dictionary[item];
             if (processed.Contains(value))
             {
-                if (twoTimes != null)
-                    twoTimes.Add(item, value);
-                airPlaneCompanies.Remove(item);
+                if (duplicates != null)
+                    duplicates.Add(item, value);
+                dictionary.Remove(item);
             }
             else
             {
@@ -204,23 +201,23 @@ public partial class DictionaryHelper
             }
         }
 
-        return airPlaneCompanies;
+        return dictionary;
     }
 
-    public static int CountAllValues<Key, Value>(Dictionary<Key, List<Value>> fe)
+    public static int CountAllValues<Key, Value>(Dictionary<Key, List<Value>> dictionary)
     {
-        var nt = 0;
-        foreach (var item in fe)
-            nt += item.Value.Count();
-        return nt;
+        var totalCount = 0;
+        foreach (var item in dictionary)
+            totalCount += item.Value.Count();
+        return totalCount;
     }
 
-    public static void IncrementOrCreate<T>(Dictionary<T, int> sl, T baseNazevTabulky)
+    public static void IncrementOrCreate<T>(Dictionary<T, int> dictionary, T key)
     {
-        if (sl.ContainsKey(baseNazevTabulky))
-            sl[baseNazevTabulky]++;
+        if (dictionary.ContainsKey(key))
+            dictionary[key]++;
         else
-            sl.Add(baseNazevTabulky, 1);
+            dictionary.Add(key, 1);
     }
 
     public static Value GetFirstItemValue<Key, Value>(Dictionary<Key, Value> dict)
@@ -237,11 +234,11 @@ public partial class DictionaryHelper
         return default;
     }
 
-    public static short AddToIndexAndReturnIncrementedShort<T>(short i, Dictionary<short, T> colors, T colorOnWeb)
+    public static short AddToIndexAndReturnIncrementedShort<T>(short index, Dictionary<short, T> dictionary, T value)
     {
-        colors.Add(i, colorOnWeb);
-        i++;
-        return i;
+        dictionary.Add(index, value);
+        index++;
+        return index;
     }
 
     public static Dictionary<Key, Value> GetDictionary<Key, Value>(List<Key> keys, List<Value> values)

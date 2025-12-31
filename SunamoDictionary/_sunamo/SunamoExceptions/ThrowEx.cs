@@ -1,46 +1,44 @@
 namespace SunamoDictionary._sunamo.SunamoExceptions;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 internal partial class ThrowEx
 {
     internal static bool HasOddNumberOfElements(string listName, ICollection list)
     {
-        var f = Exceptions.HasOddNumberOfElements;
-        return ThrowIsNotNull(f, listName, list);
+        var validationFunction = Exceptions.HasOddNumberOfElements;
+        return ThrowIsNotNull(validationFunction, listName, list);
     }
 
-    internal static bool ThrowIsNotNull<A, B>(Func<string, A, B, string?> f, A ex, B message)
+    internal static bool ThrowIsNotNull<A, B>(Func<string, A, B, string?> validationFunction, A firstArgument, B secondArgument)
     {
-        string? exc = f(FullNameOfExecutedCode(), ex, message);
-        return ThrowIsNotNull(exc);
+        string? exceptionMessage = validationFunction(FullNameOfExecutedCode(), firstArgument, secondArgument);
+        return ThrowIsNotNull(exceptionMessage);
     }
 
-    internal static bool DifferentCountInLists(string namefc, int countfc, string namesc, int countsc)
+    internal static bool DifferentCountInLists(string firstCollectionName, int firstCount, string secondCollectionName, int secondCount)
     {
         return ThrowIsNotNull(
-            Exceptions.DifferentCountInLists(FullNameOfExecutedCode(), namefc, countfc, namesc, countsc));
+            Exceptions.DifferentCountInLists(FullNameOfExecutedCode(), firstCollectionName, firstCount, secondCollectionName, secondCount));
     }
 
 
 
-    internal static bool KeyNotFound<T, U>(IDictionary<T, U> en, string dictName, T key)
-    { return ThrowIsNotNull(Exceptions.KeyNotFound(FullNameOfExecutedCode(), en, dictName, key)); }
+    internal static bool KeyNotFound<T, U>(IDictionary<T, U> dictionary, string dictionaryName, T key)
+    { return ThrowIsNotNull(Exceptions.KeyNotFound(FullNameOfExecutedCode(), dictionary, dictionaryName, key)); }
 
     #region Other
     internal static string FullNameOfExecutedCode()
     {
-        Tuple<string, string, string> placeOfExc = Exceptions.PlaceOfException();
-        string f = FullNameOfExecutedCode(placeOfExc.Item1, placeOfExc.Item2, true);
-        return f;
+        Tuple<string, string, string> placeOfException = Exceptions.PlaceOfException();
+        string fullName = FullNameOfExecutedCode(placeOfException.Item1, placeOfException.Item2, true);
+        return fullName;
     }
 
-    static string FullNameOfExecutedCode(object type, string methodName, bool fromThrowEx = false)
+    static string FullNameOfExecutedCode(object type, string methodName, bool isFromThrowEx = false)
     {
         if (methodName == null)
         {
             int depth = 2;
-            if (fromThrowEx)
+            if (isFromThrowEx)
             {
                 depth++;
             }
@@ -48,9 +46,9 @@ internal partial class ThrowEx
             methodName = Exceptions.CallingMethod(depth);
         }
         string typeFullName;
-        if (type is Type type2)
+        if (type is Type typeInstance)
         {
-            typeFullName = type2.FullName ?? "Type cannot be get via type is Type type2";
+            typeFullName = typeInstance.FullName ?? "Type cannot be get via type is Type type2";
         }
         else if (type is MethodBase method)
         {
@@ -63,18 +61,18 @@ internal partial class ThrowEx
         }
         else
         {
-            Type t = type.GetType();
-            typeFullName = t.FullName ?? "Type cannot be get via type.GetType()";
+            Type runtimeType = type.GetType();
+            typeFullName = runtimeType.FullName ?? "Type cannot be get via type.GetType()";
         }
         return string.Concat(typeFullName, ".", methodName);
     }
 
-    internal static bool ThrowIsNotNull(string? exception, bool reallyThrow = true)
+    internal static bool ThrowIsNotNull(string? exception, bool shouldReallyThrow = true)
     {
         if (exception != null)
         {
             Debugger.Break();
-            if (reallyThrow)
+            if (shouldReallyThrow)
             {
                 throw new Exception(exception);
             }

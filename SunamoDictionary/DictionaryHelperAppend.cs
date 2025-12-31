@@ -2,17 +2,17 @@ namespace SunamoDictionary;
 
 public partial class DictionaryHelper
 {
-    public static void AppendLineOrCreate<T>(Dictionary<T, StringBuilder> sb, T n, string item)
+    public static void AppendLineOrCreate<T>(Dictionary<T, StringBuilder> dictionary, T key, string text)
     {
-        if (sb.ContainsKey(n))
+        if (dictionary.ContainsKey(key))
         {
-            sb[n].AppendLine(item);
+            dictionary[key].AppendLine(text);
         }
         else
         {
-            var sb2 = new StringBuilder();
-            sb2.AppendLine(item);
-            sb.Add(n, sb2);
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(text);
+            dictionary.Add(key, stringBuilder);
         }
     }
 }
