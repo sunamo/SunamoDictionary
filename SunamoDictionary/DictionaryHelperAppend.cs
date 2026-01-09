@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoDictionary;
 
 /// <summary>
@@ -14,6 +15,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="text">The text to append.</param>
     public static void AppendLineOrCreate<T>(Dictionary<T, StringBuilder> dictionary, T key, string text)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
         {

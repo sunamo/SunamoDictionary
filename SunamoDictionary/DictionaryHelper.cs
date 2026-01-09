@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoDictionary;
 
 /// <summary>
@@ -15,7 +16,7 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary to modify.</param>
     /// <param name="key">The key to add or update.</param>
     /// <param name="value">The value to add to the list.</param>
-    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> dictionary, Key key, Value value)
+    public static void AddOrCreateIfDontExists<Key, Value>(Dictionary<Key, List<Value>> dictionary, Key key, Value value) where Key : notnull
     {
         if (dictionary.ContainsKey(key))
         {
@@ -66,7 +67,7 @@ public partial class DictionaryHelper
     public static Dictionary<string, List<string>> CategoryParser(List<string> list, bool isRemovingWhichHaveNoEntries)
     {
         var result = new Dictionary<string, List<string>>();
-        List<string> currentEntries = null;
+        List<string>? currentEntries = null;
         for (var i = 0; i < list.Count; i++)
         {
             var item = list[i].Trim();
@@ -100,12 +101,12 @@ public partial class DictionaryHelper
     /// <typeparam name="T">The type of items in the list.</typeparam>
     /// <param name="items">The list of items to count.</param>
     /// <returns>A list of key-value pairs sorted by count in descending order.</returns>
-    public static List<KeyValuePair<T, int>> CountOfItems<T>(List<T> items)
+    public static List<KeyValuePair<T, int>> CountOfItems<T>(List<T> items) where T : notnull
     {
         var pairs = new Dictionary<T, int>();
         foreach (var item in items)
             AddOrPlus(pairs, item, 1);
-        var orderedPairs = pairs.OrderByDescending(dictionary => dictionary.Value);
+        var orderedPairs = pairs.OrderByDescending(pair => pair.Value);
         var result = orderedPairs.ToList();
         return result;
     }
@@ -128,7 +129,7 @@ public partial class DictionaryHelper
     /// <typeparam name="U">The type of the dictionary value.</typeparam>
     /// <param name="dictionary">The dictionary to modify.</param>
     /// <param name="key">The key to remove.</param>
-    public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> dictionary, T key)
+    public static void RemoveIfExists<T, U>(Dictionary<T, List<U>> dictionary, T key) where T : notnull
     {
         if (dictionary.ContainsKey(key))
             dictionary.Remove(key);
@@ -167,7 +168,7 @@ public partial class DictionaryHelper
     /// <typeparam name="T">The original value type.</typeparam>
     /// <param name="dictionary">The dictionary to group.</param>
     /// <returns>A dictionary where original values become keys with lists of original keys as values.</returns>
-    public static Dictionary<T, List<U>> GroupByValues<U, T>(Dictionary<U, T> dictionary)
+    public static Dictionary<T, List<U>> GroupByValues<U, T>(Dictionary<U, T> dictionary) where U : notnull where T : notnull
     {
         var result = new Dictionary<T, List<U>>();
         foreach (var item in dictionary)
@@ -181,7 +182,7 @@ public partial class DictionaryHelper
     /// <typeparam name="T2">The type of values in the dictionary.</typeparam>
     /// <param name="dictionary">The dictionary containing lists of values.</param>
     /// <returns>A single list containing all values from all entries.</returns>
-    public static List<T2> AggregateValues<T2>(Dictionary<T2, List<T2>> dictionary)
+    public static List<T2> AggregateValues<T2>(Dictionary<T2, List<T2>> dictionary) where T2 : notnull
     {
         var result = new List<T2>();
         foreach (var entry in dictionary)
@@ -196,7 +197,7 @@ public partial class DictionaryHelper
     /// <typeparam name="U">The type of the dictionary value.</typeparam>
     /// <param name="dictionary">The dictionary to copy.</param>
     /// <returns>A new dictionary with the same key-value pairs.</returns>
-    public static Dictionary<T, U> ReturnsCopy<T, U>(Dictionary<T, U> dictionary)
+    public static Dictionary<T, U> ReturnsCopy<T, U>(Dictionary<T, U> dictionary) where T : notnull
     {
         var result = new Dictionary<T, U>();
         foreach (var item in dictionary)
@@ -213,7 +214,7 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary to process.</param>
     /// <param name="duplicates">Optional dictionary to store removed duplicates (can be null).</param>
     /// <returns>The dictionary with duplicates removed.</returns>
-    public static Dictionary<T1, T2> RemoveDuplicatedFromDictionaryByValues<T1, T2>(Dictionary<T1, T2> dictionary, Dictionary<T1, T2> duplicates)
+    public static Dictionary<T1, T2> RemoveDuplicatedFromDictionaryByValues<T1, T2>(Dictionary<T1, T2> dictionary, Dictionary<T1, T2>? duplicates) where T1 : notnull
     {
         var processed = new List<T2>();
         foreach (var item in dictionary.Keys.ToList())
@@ -241,7 +242,7 @@ public partial class DictionaryHelper
     /// <typeparam name="Value">The type of the values in the lists.</typeparam>
     /// <param name="dictionary">The dictionary to count.</param>
     /// <returns>The total count of all values in all lists.</returns>
-    public static int CountAllValues<Key, Value>(Dictionary<Key, List<Value>> dictionary)
+    public static int CountAllValues<Key, Value>(Dictionary<Key, List<Value>> dictionary) where Key : notnull
     {
         var totalCount = 0;
         foreach (var item in dictionary)
@@ -255,7 +256,7 @@ public partial class DictionaryHelper
     /// <typeparam name="T">The type of the dictionary key.</typeparam>
     /// <param name="dictionary">The dictionary to modify.</param>
     /// <param name="key">The key to increment.</param>
-    public static void IncrementOrCreate<T>(Dictionary<T, int> dictionary, T key)
+    public static void IncrementOrCreate<T>(Dictionary<T, int> dictionary, T key) where T : notnull
     {
         if (dictionary.ContainsKey(key))
             dictionary[key]++;
@@ -270,7 +271,7 @@ public partial class DictionaryHelper
     /// <typeparam name="Value">The type of the dictionary value.</typeparam>
     /// <param name="dictionary">The dictionary to query.</param>
     /// <returns>The value of the first entry, or default if dictionary is empty.</returns>
-    public static Value GetFirstItemValue<Key, Value>(Dictionary<Key, Value> dictionary)
+    public static Value? GetFirstItemValue<Key, Value>(Dictionary<Key, Value> dictionary) where Key : notnull
     {
         foreach (var item in dictionary)
             return item.Value;
@@ -284,7 +285,7 @@ public partial class DictionaryHelper
     /// <typeparam name="Value">The type of the dictionary value.</typeparam>
     /// <param name="dictionary">The dictionary to query.</param>
     /// <returns>The key of the first entry, or default if dictionary is empty.</returns>
-    public static Key GetFirstItemKey<Key, Value>(Dictionary<Key, Value> dictionary)
+    public static Key? GetFirstItemKey<Key, Value>(Dictionary<Key, Value> dictionary) where Key : notnull
     {
         foreach (var item in dictionary)
             return item.Key;
@@ -315,7 +316,7 @@ public partial class DictionaryHelper
     /// <param name="values">The list of values.</param>
     /// <returns>A new dictionary with paired keys and values.</returns>
     /// <exception cref="Exception">Thrown when the lists have different counts.</exception>
-    public static Dictionary<Key, Value> GetDictionary<Key, Value>(List<Key> keys, List<Value> values)
+    public static Dictionary<Key, Value> GetDictionary<Key, Value>(List<Key> keys, List<Value> values) where Key : notnull
     {
         ThrowEx.DifferentCountInLists("keys", keys.Count, "values", values.Count);
         var result = new Dictionary<Key, Value>();

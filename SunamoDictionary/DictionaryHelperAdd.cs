@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoDictionary;
 
 /// <summary>
@@ -17,6 +18,7 @@ public partial class DictionaryHelper
     /// <param name="value">The value to add.</param>
     [Obsolete("Method purpose is unclear")]
     public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, T2 value)
+        where T1 : notnull
     {
         if (!dictionary.ContainsKey(key))
             dictionary.Add(key, value);
@@ -32,6 +34,7 @@ public partial class DictionaryHelper
     /// <param name="valueFactory">Function that creates a new value from the key if it doesn't exist.</param>
     /// <returns>The existing value or the newly created value.</returns>
     public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, Func<T1, T2> valueFactory)
+        where T1 : notnull
     {
         if (dictionary.ContainsKey(key))
         {
@@ -53,6 +56,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="value">The DateTime value to convert to TimeSpan and add.</param>
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> dictionary, Key key, DateTime value)
+        where Key : notnull
     {
         var timeSpan = TimeSpan.FromTicks(value.Ticks);
         AddOrCreateTimeSpan(dictionary, key, timeSpan);
@@ -66,6 +70,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="value">The TimeSpan value to add.</param>
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> dictionary, Key key, TimeSpan value)
+        where Key : notnull
     {
         if (dictionary.ContainsKey(key))
             dictionary[key] = dictionary[key].Add(value);
@@ -89,6 +94,7 @@ public partial class DictionaryHelper
     /// <exception cref="Exception">Thrown when key is not found and isThrowingExIfNotContains is true.</exception>
     public static void AddToNewDictionary<T, U>(Dictionary<T, U> dictionary, T key, Dictionary<T, U> toReplace,
         bool isThrowingExIfNotContains = true)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
         {
@@ -128,6 +134,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="value">The value to add to the list.</param>
     public static void AddOrCreate<T, U>(Dictionary<T, List<U>> dictionary, T key, U value)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
         {
@@ -152,6 +159,7 @@ public partial class DictionaryHelper
     /// <returns>The existing list or the newly created list.</returns>
     public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> dictionary, T1 key,
         Func<T1, List<T2>> valueFactory)
+        where T1 : notnull
     {
         if (!dictionary.ContainsKey(key))
         {
@@ -174,7 +182,8 @@ public partial class DictionaryHelper
     /// <param name="isPreventingDuplicities">Whether to prevent duplicate values from being added.</param>
     /// <param name="stringDictionary">Optional dictionary for string comparison when preventing duplicates.</param>
     public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> dictionary, Key key, List<Value> values,
-        bool isPreventingDuplicities = false, Dictionary<Key, List<string>> stringDictionary = null)
+        bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
+        where Key : notnull
     {
         foreach (var value in values) AddOrCreate<Key, Value, object>(dictionary, key, value, isPreventingDuplicities, stringDictionary);
     }
@@ -194,7 +203,8 @@ public partial class DictionaryHelper
     /// <param name="isPreventingDuplicities">Whether to prevent duplicate values from being added.</param>
     /// <param name="stringDictionary">Optional dictionary for string comparison when preventing duplicates.</param>
     public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dictionary, Key key, Value value,
-        bool isPreventingDuplicities = false, Dictionary<Key, List<string>> stringDictionary = null)
+        bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
+        where Key : notnull
     {
         var isComparingWithString = false;
         if (stringDictionary != null) isComparingWithString = true;
@@ -311,7 +321,8 @@ public partial class DictionaryHelper
     /// <param name="isPreventingDuplicities">Whether to prevent duplicate values from being added.</param>
     /// <param name="stringDictionary">Optional dictionary for string comparison when preventing duplicates.</param>
     public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> dictionary, Key key, Value value,
-        bool isPreventingDuplicities = false, Dictionary<Key, List<string>> stringDictionary = null)
+        bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
+        where Key : notnull
     {
         AddOrCreate<Key, Value, object>(dictionary, key, value, isPreventingDuplicities, stringDictionary);
     }
@@ -330,6 +341,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="increment">The amount to add to the value.</param>
     public static void AddOrPlus<T>(Dictionary<T, int> dictionary, T key, int increment)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
             dictionary[key] += increment;
@@ -345,6 +357,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="increment">The amount to add to the value.</param>
     public static void AddOrPlus<T>(Dictionary<T, long> dictionary, T key, long increment)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
             dictionary[key] += increment;

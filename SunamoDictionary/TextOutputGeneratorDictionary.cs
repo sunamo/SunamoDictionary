@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoDictionary;
 
 /// <summary>
@@ -19,9 +20,9 @@ public class TextOutputGeneratorDictionary
     /// <summary>
     /// Adds a header with the specified key to the output.
     /// </summary>
-    /// <param name="key">The header key.</param>
+    /// <param name="value">The header key.</param>
     /// <exception cref="NotImplementedException">This method is not yet implemented.</exception>
-    public void Header(string key)
+    public void Header(string value)
     {
         throw new NotImplementedException();
     }

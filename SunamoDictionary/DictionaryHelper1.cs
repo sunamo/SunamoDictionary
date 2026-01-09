@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoDictionary;
 
 /// <summary>
@@ -26,6 +27,8 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary to transform.</param>
     /// <returns>A new dictionary with keys and values swapped.</returns>
     public static Dictionary<U, T> SwitchKeyAndValue<T, U>(Dictionary<T, U> dictionary)
+        where T : notnull
+        where U : notnull
     {
         var result = new Dictionary<U, T>(dictionary.Count);
         foreach (var item in dictionary)
@@ -41,6 +44,7 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary with int keys.</param>
     /// <returns>A new dictionary with converted key types.</returns>
     public static Dictionary<TKey, T1> ChangeTypeOfKey<TKey, T1>(Dictionary<int, T1> dictionary)
+        where TKey : notnull
     {
         var result = new Dictionary<TKey, T1>(dictionary.Count);
         foreach (var item in dictionary)
@@ -56,6 +60,7 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary with short keys.</param>
     /// <returns>A new dictionary with converted key types.</returns>
     public static Dictionary<TKey, T1> ChangeTypeOfKey<TKey, T1>(Dictionary<short, T1> dictionary)
+        where TKey : notnull
     {
         var result = new Dictionary<TKey, T1>(dictionary.Count);
         foreach (var item in dictionary)
@@ -71,8 +76,8 @@ public partial class DictionaryHelper
     /// <returns>A dictionary created from alternating key-value pairs.</returns>
     /// <exception cref="Exception">Thrown when the list has odd number of elements.</exception>
     public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> list)
+        where T : notnull
     {
-        var methodName = Exceptions.CallingMethod();
         ThrowEx.HasOddNumberOfElements("list", list);
         var result = new Dictionary<T, T>();
         for (var i = 0; i < list.Count; i++)
@@ -91,6 +96,7 @@ public partial class DictionaryHelper
     /// <returns>A dictionary mapping first list elements to second list elements.</returns>
     /// <exception cref="Exception">Thrown when the lists have different counts.</exception>
     public static Dictionary<T1, T2> GetDictionaryFromTwoList<T1, T2>(List<T1> firstList, List<T2> secondList, bool isAddingRandomWhenKeyExists = false)
+        where T1 : notnull
     {
         ThrowEx.DifferentCountInLists("firstList", firstList.Count, "secondList", secondList.Count);
         var list = new List<KeyValuePair<T1, T2>>();
@@ -108,6 +114,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to look up.</param>
     /// <returns>The list of values if key exists, otherwise empty list.</returns>
     public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dictionary, T key)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
             return dictionary[key];
@@ -122,6 +129,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to look up.</param>
     /// <returns>The value if key exists, otherwise the key as string.</returns>
     public static string GetOrKey<T>(Dictionary<T, string> dictionary, T key)
+        where T : notnull
     {
         if (dictionary.ContainsKey(key))
             return dictionary[key];
@@ -137,6 +145,7 @@ public partial class DictionaryHelper
     /// <param name="chunkSize">The maximum number of entries per chunk.</param>
     /// <returns>A list of dictionaries, each containing up to chunkSize entries.</returns>
     public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dictionary, int chunkSize)
+        where Key : notnull
     {
         var result = new List<Dictionary<Key, Value>>();
         var currentDictionary = new Dictionary<Key, Value>();
@@ -163,6 +172,7 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary to clone.</param>
     /// <returns>A new dictionary with the same key-value pairs.</returns>
     public static Dictionary<T1, T2> CloneDictionary<T1, T2>(Dictionary<T1, T2> dictionary)
+        where T1 : notnull
     {
         var newDictionary = dictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
         return newDictionary;
@@ -219,6 +229,7 @@ public partial class DictionaryHelper
     /// <param name="orderedEnumerable">The ordered enumerable to convert.</param>
     /// <returns>A dictionary containing the key-value pairs.</returns>
     public static Dictionary<T1, T2> GetDictionaryFromIOrderedEnumerable<T1, T2>(IOrderedEnumerable<KeyValuePair<T1, T2>> orderedEnumerable)
+        where T1 : notnull
     {
         return GetDictionaryFromIList(orderedEnumerable.ToList());
     }
@@ -232,6 +243,7 @@ public partial class DictionaryHelper
     /// <param name="isAddingRandomWhenKeyExists">Whether to add random suffix when duplicate keys are found.</param>
     /// <returns>A dictionary containing the key-value pairs.</returns>
     public static Dictionary<T1, T2> GetDictionaryFromIList<T1, T2>(List<KeyValuePair<T1, T2>> list, bool isAddingRandomWhenKeyExists = false)
+        where T1 : notnull
     {
         var dictionary = new Dictionary<T1, T2>();
         foreach (var item in list)
@@ -260,6 +272,7 @@ public partial class DictionaryHelper
     /// <param name="key">The key to add or update.</param>
     /// <param name="value">The value to set.</param>
     public static void AddOrSet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, T2 value)
+        where T1 : notnull
     {
         if (dictionary.ContainsKey(key))
             dictionary[key] = value;
@@ -275,6 +288,7 @@ public partial class DictionaryHelper
     /// <param name="dictionary">The dictionary to copy from.</param>
     /// <param name="arrayIndex">The starting index to copy from.</param>
     public static void CopyTo<T, U>(Dictionary<T, U> dictionary, int arrayIndex)
+        where T : notnull
     {
         var array = new KeyValuePair<T, U>[dictionary.Count - arrayIndex + 1];
         var currentIndex = 0;
