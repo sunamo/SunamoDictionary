@@ -1,4 +1,3 @@
-// variables names: ok
 namespace SunamoDictionary._sunamo;
 
 /// <summary>
