@@ -132,7 +132,7 @@ public partial class DictionaryHelper
     {
         if (dictionary.ContainsKey(key))
             return dictionary[key];
-        return key.ToString();
+        return key.ToString()!;
     }
 
     /// <summary>

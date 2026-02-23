@@ -215,7 +215,7 @@ public partial class DictionaryHelper
             foreach (var item in dictionary)
             {
                 var existingKey = item.Key as IList<ColType>;
-                if (existingKey.SequenceEqual(currentKey)) keyExists = true;
+                if (existingKey!.SequenceEqual(currentKey!)) keyExists = true;
             }
 
             if (keyExists)
@@ -223,7 +223,7 @@ public partial class DictionaryHelper
                 foreach (var item in dictionary)
                 {
                     var existingKey = item.Key as IList<ColType>;
-                    if (existingKey.SequenceEqual(currentKey))
+                    if (existingKey!.SequenceEqual(currentKey!))
                     {
                         if (isPreventingDuplicities)
                             if (item.Value.Contains(value))
@@ -241,8 +241,8 @@ public partial class DictionaryHelper
                 if (isComparingWithString)
                 {
                     List<string> stringValues = new();
-                    stringValues.Add(value.ToString());
-                    stringDictionary.Add(key, stringValues);
+                    stringValues.Add(value!.ToString()!);
+                    stringDictionary!.Add(key, stringValues);
                 }
             }
         }
@@ -258,7 +258,7 @@ public partial class DictionaryHelper
                         if (dictionary[key].Contains(value))
                             isAdding = false;
                         else if (isComparingWithString)
-                            if (stringDictionary[key].Contains(value.ToString()))
+                            if (stringDictionary![key].Contains(value!.ToString()!))
                                 isAdding = false;
                     }
 
@@ -270,9 +270,9 @@ public partial class DictionaryHelper
 
                         if (isComparingWithString)
                         {
-                            var stringValues = stringDictionary[key];
+                            var stringValues = stringDictionary![key];
 
-                            if (values != null) stringValues.Add(value.ToString());
+                            if (values != null) stringValues.Add(value!.ToString()!);
                         }
                     }
                 }
@@ -291,15 +291,15 @@ public partial class DictionaryHelper
 
                     if (isComparingWithString)
                     {
-                        if (!stringDictionary.ContainsKey(key))
+                        if (!stringDictionary!.ContainsKey(key))
                         {
                             List<string> stringValues = new();
-                            stringValues.Add(value.ToString());
+                            stringValues.Add(value!.ToString()!);
                             stringDictionary.Add(key, stringValues);
                         }
                         else
                         {
-                            stringDictionary[key].Add(value.ToString());
+                            stringDictionary[key].Add(value!.ToString()!);
                         }
                     }
                 }

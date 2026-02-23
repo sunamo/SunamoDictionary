@@ -79,7 +79,7 @@ public partial class DictionaryHelper
             }
             else
             {
-                currentEntries.Add(item);
+                currentEntries!.Add(item);
             }
         }
 
