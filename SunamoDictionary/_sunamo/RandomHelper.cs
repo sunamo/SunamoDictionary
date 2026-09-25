@@ -1,7 +1,16 @@
 namespace SunamoDictionary._sunamo;
 
+/// <summary>
+/// Helper class for generating random values.
+/// Provides methods for creating random strings and other random data.
+/// </summary>
 internal class RandomHelper
 {
+    /// <summary>
+    /// Generates a random alphanumeric string of the specified length.
+    /// </summary>
+    /// <param name="length">The length of the random string to generate.</param>
+    /// <returns>A random string containing uppercase letters and digits.</returns>
     internal static string RandomString(int length)
     {
         var random = new Random();

@@ -1,17 +1,30 @@
 namespace SunamoDictionary;
 
-// Helper methods for working with dictionaries - Part 1.
-// Provides utility methods for creating dictionaries from strings and lists, and performing transformations.
+/// <summary>
+/// Helper methods for working with dictionaries - Part 1.
+/// Provides utility methods for creating dictionaries from strings and lists, and performing transformations.
+/// </summary>
 public partial class DictionaryHelper
 {
-    // Creates a dictionary from a string by splitting it with delimiters.
+    /// <summary>
+    /// Creates a dictionary from a string by splitting it with delimiters.
+    /// </summary>
+    /// <param name="text">The text to parse into key-value pairs.</param>
+    /// <param name="delimiters">The delimiters to split the text.</param>
+    /// <returns>A dictionary created from alternating key-value pairs in the split text.</returns>
     public static Dictionary<string, string> GetDictionaryByKeyValueInString(string text, params string[] delimiters)
     {
         var parts = text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).ToList();
         return GetDictionaryByKeyValueInString(parts);
     }
 
-    // Swaps keys and values in a dictionary.
+    /// <summary>
+    /// Swaps keys and values in a dictionary.
+    /// </summary>
+    /// <typeparam name="T">The original key type.</typeparam>
+    /// <typeparam name="U">The original value type.</typeparam>
+    /// <param name="dictionary">The dictionary to transform.</param>
+    /// <returns>A new dictionary with keys and values swapped.</returns>
     public static Dictionary<U, T> SwitchKeyAndValue<T, U>(Dictionary<T, U> dictionary)
         where T : notnull
         where U : notnull
@@ -22,7 +35,13 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Changes the type of dictionary keys from int to the specified type.
+    /// <summary>
+    /// Changes the type of dictionary keys from int to the specified type.
+    /// </summary>
+    /// <typeparam name="TKey">The target key type.</typeparam>
+    /// <typeparam name="T1">The value type.</typeparam>
+    /// <param name="dictionary">The dictionary with int keys.</param>
+    /// <returns>A new dictionary with converted key types.</returns>
     public static Dictionary<TKey, T1> ChangeTypeOfKey<TKey, T1>(Dictionary<int, T1> dictionary)
         where TKey : notnull
     {
@@ -32,7 +51,13 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Changes the type of dictionary keys from short to the specified type.
+    /// <summary>
+    /// Changes the type of dictionary keys from short to the specified type.
+    /// </summary>
+    /// <typeparam name="TKey">The target key type.</typeparam>
+    /// <typeparam name="T1">The value type.</typeparam>
+    /// <param name="dictionary">The dictionary with short keys.</param>
+    /// <returns>A new dictionary with converted key types.</returns>
     public static Dictionary<TKey, T1> ChangeTypeOfKey<TKey, T1>(Dictionary<short, T1> dictionary)
         where TKey : notnull
     {
@@ -42,7 +67,13 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Creates a dictionary from a list where alternating elements become key-value pairs.
+    /// <summary>
+    /// Creates a dictionary from a list where alternating elements become key-value pairs.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the list.</typeparam>
+    /// <param name="list">The list to convert (must have even number of elements).</param>
+    /// <returns>A dictionary created from alternating key-value pairs.</returns>
+    /// <exception cref="Exception">Thrown when the list has odd number of elements.</exception>
     public static Dictionary<T, T> GetDictionaryByKeyValueInString<T>(List<T> list)
         where T : notnull
     {
@@ -53,7 +84,16 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Creates a dictionary from two lists of equal length.
+    /// <summary>
+    /// Creates a dictionary from two lists of equal length.
+    /// </summary>
+    /// <typeparam name="T1">The type of keys.</typeparam>
+    /// <typeparam name="T2">The type of values.</typeparam>
+    /// <param name="firstList">The list of keys.</param>
+    /// <param name="secondList">The list of values.</param>
+    /// <param name="isAddingRandomWhenKeyExists">Whether to add random suffix when duplicate keys are found.</param>
+    /// <returns>A dictionary mapping first list elements to second list elements.</returns>
+    /// <exception cref="Exception">Thrown when the lists have different counts.</exception>
     public static Dictionary<T1, T2> GetDictionaryFromTwoList<T1, T2>(List<T1> firstList, List<T2> secondList, bool isAddingRandomWhenKeyExists = false)
         where T1 : notnull
     {
@@ -64,7 +104,14 @@ public partial class DictionaryHelper
         return GetDictionaryFromIList(list, isAddingRandomWhenKeyExists);
     }
 
-    // Gets values for a key if it exists, otherwise returns empty list.
+    /// <summary>
+    /// Gets values for a key if it exists, otherwise returns empty list.
+    /// </summary>
+    /// <typeparam name="T">The type of the dictionary key.</typeparam>
+    /// <typeparam name="U">The type of values in the list.</typeparam>
+    /// <param name="dictionary">The dictionary to query.</param>
+    /// <param name="key">The key to look up.</param>
+    /// <returns>The list of values if key exists, otherwise empty list.</returns>
     public static List<U> GetValuesOrEmpty<T, U>(IDictionary<T, List<U>> dictionary, T key)
         where T : notnull
     {
@@ -73,7 +120,13 @@ public partial class DictionaryHelper
         return new List<U>();
     }
 
-    // Gets the value for a key, or the key itself converted to string if not found.
+    /// <summary>
+    /// Gets the value for a key, or the key itself converted to string if not found.
+    /// </summary>
+    /// <typeparam name="T">The type of the dictionary key.</typeparam>
+    /// <param name="dictionary">The dictionary to query.</param>
+    /// <param name="key">The key to look up.</param>
+    /// <returns>The value if key exists, otherwise the key as string.</returns>
     public static string GetOrKey<T>(Dictionary<T, string> dictionary, T key)
         where T : notnull
     {
@@ -82,7 +135,14 @@ public partial class DictionaryHelper
         return key.ToString()!;
     }
 
-    // Divides a dictionary into chunks of specified size.
+    /// <summary>
+    /// Divides a dictionary into chunks of specified size.
+    /// </summary>
+    /// <typeparam name="Key">The type of the dictionary key.</typeparam>
+    /// <typeparam name="Value">The type of the dictionary value.</typeparam>
+    /// <param name="dictionary">The dictionary to divide.</param>
+    /// <param name="chunkSize">The maximum number of entries per chunk.</param>
+    /// <returns>A list of dictionaries, each containing up to chunkSize entries.</returns>
     public static List<Dictionary<Key, Value>> DivideAfter<Key, Value>(Dictionary<Key, Value> dictionary, int chunkSize)
         where Key : notnull
     {
@@ -103,14 +163,24 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Creates a shallow copy of a dictionary.
+    /// <summary>
+    /// Creates a shallow copy of a dictionary.
+    /// </summary>
+    /// <typeparam name="T1">The type of the dictionary key.</typeparam>
+    /// <typeparam name="T2">The type of the dictionary value.</typeparam>
+    /// <param name="dictionary">The dictionary to clone.</param>
+    /// <returns>A new dictionary with the same key-value pairs.</returns>
     public static Dictionary<T1, T2> CloneDictionary<T1, T2>(Dictionary<T1, T2> dictionary)
         where T1 : notnull
     {
         return dictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
     }
 
-    // Converts a dictionary to a flat list alternating between keys and values.
+    /// <summary>
+    /// Converts a dictionary to a flat list alternating between keys and values.
+    /// </summary>
+    /// <param name="dictionary">The dictionary to convert.</param>
+    /// <returns>A list with alternating key-value entries.</returns>
     public static List<string> GetListStringFromDictionary(Dictionary<string, string> dictionary)
     {
         var result = new List<string>();
@@ -123,7 +193,11 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Extracts values from an ordered dictionary of DateTime to int entries.
+    /// <summary>
+    /// Extracts values from an ordered dictionary of DateTime to int entries.
+    /// </summary>
+    /// <param name="dictionary">The ordered dictionary to process.</param>
+    /// <returns>A list of string representations of the values.</returns>
     public static List<string> GetListStringFromDictionaryDateTimeInt(IOrderedEnumerable<KeyValuePair<DateTime, int>> dictionary)
     {
         var result = new List<string>(dictionary.Count());
@@ -132,7 +206,11 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Extracts values from an ordered dictionary of int to int entries.
+    /// <summary>
+    /// Extracts values from an ordered dictionary of int to int entries.
+    /// </summary>
+    /// <param name="dictionary">The ordered dictionary to process.</param>
+    /// <returns>A list of string representations of the values.</returns>
     public static List<string> GetListStringFromDictionaryIntInt(IOrderedEnumerable<KeyValuePair<int, int>> dictionary)
     {
         var result = new List<string>(dictionary.Count());
@@ -141,14 +219,27 @@ public partial class DictionaryHelper
         return result;
     }
 
-    // Converts an ordered enumerable of key-value pairs to a dictionary.
+    /// <summary>
+    /// Converts an ordered enumerable of key-value pairs to a dictionary.
+    /// </summary>
+    /// <typeparam name="T1">The type of the key.</typeparam>
+    /// <typeparam name="T2">The type of the value.</typeparam>
+    /// <param name="orderedEnumerable">The ordered enumerable to convert.</param>
+    /// <returns>A dictionary containing the key-value pairs.</returns>
     public static Dictionary<T1, T2> GetDictionaryFromIOrderedEnumerable<T1, T2>(IOrderedEnumerable<KeyValuePair<T1, T2>> orderedEnumerable)
         where T1 : notnull
     {
         return GetDictionaryFromIList(orderedEnumerable.ToList());
     }
 
-    // Converts a list of key-value pairs to a dictionary.
+    /// <summary>
+    /// Converts a list of key-value pairs to a dictionary.
+    /// </summary>
+    /// <typeparam name="T1">The type of the key.</typeparam>
+    /// <typeparam name="T2">The type of the value.</typeparam>
+    /// <param name="list">The list of key-value pairs.</param>
+    /// <param name="isAddingRandomWhenKeyExists">Whether to add random suffix when duplicate keys are found.</param>
+    /// <returns>A dictionary containing the key-value pairs.</returns>
     public static Dictionary<T1, T2> GetDictionaryFromIList<T1, T2>(List<KeyValuePair<T1, T2>> list, bool isAddingRandomWhenKeyExists = false)
         where T1 : notnull
     {
@@ -170,7 +261,14 @@ public partial class DictionaryHelper
         return dictionary;
     }
 
-    // Adds a new key-value pair or sets the value if the key already exists.
+    /// <summary>
+    /// Adds a new key-value pair or sets the value if the key already exists.
+    /// </summary>
+    /// <typeparam name="T1">The type of the dictionary key.</typeparam>
+    /// <typeparam name="T2">The type of the dictionary value.</typeparam>
+    /// <param name="dictionary">The dictionary to modify.</param>
+    /// <param name="key">The key to add or update.</param>
+    /// <param name="value">The value to set.</param>
     public static void AddOrSet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, T2 value)
         where T1 : notnull
     {
@@ -180,7 +278,13 @@ public partial class DictionaryHelper
             dictionary.Add(key, value);
     }
 
-    // Copies elements from a dictionary starting at a specified index.
+    /// <summary>
+    /// Copies elements from a dictionary starting at a specified index.
+    /// </summary>
+    /// <typeparam name="T">The type of the dictionary key.</typeparam>
+    /// <typeparam name="U">The type of the dictionary value.</typeparam>
+    /// <param name="dictionary">The dictionary to copy from.</param>
+    /// <param name="arrayIndex">The starting index to copy from.</param>
     public static void CopyTo<T, U>(Dictionary<T, U> dictionary, int arrayIndex)
         where T : notnull
     {
@@ -201,7 +305,13 @@ public partial class DictionaryHelper
         }
     }
 
-    // Copies elements from a list of key-value pairs starting at a specified index.
+    /// <summary>
+    /// Copies elements from a list of key-value pairs starting at a specified index.
+    /// </summary>
+    /// <typeparam name="T">The type of the key.</typeparam>
+    /// <typeparam name="U">The type of the value.</typeparam>
+    /// <param name="list">The list to copy from.</param>
+    /// <param name="arrayIndex">The starting index to copy from.</param>
     public static void CopyTo<T, U>(List<KeyValuePair<T, U>> list, int arrayIndex)
     {
         var array = new KeyValuePair<T, U>[list.Count - arrayIndex + 1];
