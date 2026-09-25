@@ -69,9 +69,8 @@ internal partial class ThrowEx
     /// <returns>A string in the format "TypeName.MethodName".</returns>
     internal static string FullNameOfExecutedCode()
     {
-        Tuple<string, string, string> placeOfException = Exceptions.PlaceOfException();
-        string fullName = FullNameOfExecutedCode(placeOfException.Item1, placeOfException.Item2, true);
-        return fullName;
+        var placeOfException = Exceptions.PlaceOfException();
+        return FullNameOfExecutedCode(placeOfException.Item1, placeOfException.Item2, true);
     }
 
     /// <summary>
@@ -109,7 +108,7 @@ internal partial class ThrowEx
         }
         else
         {
-            Type runtimeType = type.GetType();
+            var runtimeType = type.GetType();
             typeFullName = runtimeType.FullName ?? "Type cannot be get via type.GetType()";
         }
         return string.Concat(typeFullName, ".", methodName);

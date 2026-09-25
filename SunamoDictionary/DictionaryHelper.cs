@@ -106,8 +106,7 @@ public partial class DictionaryHelper
         foreach (var item in items)
             AddOrPlus(pairs, item, 1);
         var orderedPairs = pairs.OrderByDescending(pair => pair.Value);
-        var result = orderedPairs.ToList();
-        return result;
+        return orderedPairs.ToList();
     }
 
     /// <summary>
