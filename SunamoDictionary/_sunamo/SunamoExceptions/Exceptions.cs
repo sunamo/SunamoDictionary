@@ -80,8 +80,7 @@ internal sealed partial class Exceptions
         {
             return "Method name cannot be get";
         }
-        var methodName = methodBase.Name;
-        return methodName;
+        return methodBase.Name;
     }
     #endregion
 

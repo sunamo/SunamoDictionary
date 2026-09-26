@@ -205,8 +205,7 @@ public partial class DictionaryHelper
         bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
         where Key : notnull
     {
-        var isComparingWithString = false;
-        if (stringDictionary != null) isComparingWithString = true;
+        var isComparingWithString = stringDictionary != null;
 
         if (key is IList && typeof(ColType) != typeof(object))
         {

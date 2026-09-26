@@ -173,8 +173,7 @@ public partial class DictionaryHelper
     public static Dictionary<T1, T2> CloneDictionary<T1, T2>(Dictionary<T1, T2> dictionary)
         where T1 : notnull
     {
-        var newDictionary = dictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
-        return newDictionary;
+        return dictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
     }
 
     /// <summary>
