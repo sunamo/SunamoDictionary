@@ -1,5 +1,10 @@
 # SunamoDictionary
 
+## Short description
+
+Pomocné metody pro práci se slovníky v .NET.
+
+
 Your help for working with dictionary
 
 ## Overview
