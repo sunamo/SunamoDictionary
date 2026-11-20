@@ -6,6 +6,13 @@ public partial class DictionaryHelper
 {
     // Adds a key-value pair only if the key doesn't already exist.
     // This method has unclear purpose and is marked as obsolete.
+    /// <summary>
+    /// Add or no set t 1 t 2.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>The add or no set t 1 t 2 result.</returns>
     [Obsolete("Method purpose is unclear")]
     public static void AddOrNoSet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, T2 value)
         where T1 : notnull
@@ -15,6 +22,13 @@ public partial class DictionaryHelper
     }
 
     // Gets the value for a key if it exists, otherwise creates it using a factory function.
+    /// <summary>
+    /// Add or get t 1 t 2.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="valueFactory">The value factory.</param>
+    /// <returns>The add or get t 1 t 2 result.</returns>
     public static T2 AddOrGet<T1, T2>(IDictionary<T1, T2> dictionary, T1 key, Func<T1, T2> valueFactory)
         where T1 : notnull
     {
@@ -31,6 +45,13 @@ public partial class DictionaryHelper
     #region AddOrCreateTimeSpan
 
     // Adds or creates a TimeSpan entry from a DateTime value.
+    /// <summary>
+    /// Add or create time span key.
+    /// </summary>
+    /// <typeparam name="Key">The type Key.</typeparam>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> dictionary, Key key, DateTime value)
         where Key : notnull
     {
@@ -39,6 +60,13 @@ public partial class DictionaryHelper
     }
 
     // Adds or creates a TimeSpan entry, adding to existing value if key exists.
+    /// <summary>
+    /// Add or create time span key.
+    /// </summary>
+    /// <typeparam name="Key">The type Key.</typeparam>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
     public static void AddOrCreateTimeSpan<Key>(Dictionary<Key, TimeSpan> dictionary, Key key, TimeSpan value)
         where Key : notnull
     {
@@ -53,6 +81,14 @@ public partial class DictionaryHelper
     #region Other
 
     // Adds a key-value pair to a new dictionary if the key exists in the source dictionary.
+    /// <summary>
+    /// Add to new dictionary t u.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="toReplace">The to replace.</param>
+    /// <param name="isThrowingExIfNotContains">The is throwing ex if not contains.</param>
+    /// <returns>The add to new dictionary t u result.</returns>
     public static void AddToNewDictionary<T, U>(Dictionary<T, U> dictionary, T key, Dictionary<T, U> toReplace,
         bool isThrowingExIfNotContains = true)
         where T : notnull
@@ -68,6 +104,14 @@ public partial class DictionaryHelper
     }
 
     // Adds a value to the dictionary at the specified index and returns the incremented index.
+    /// <summary>
+    /// Add to index and return incremented int t.
+    /// </summary>
+    /// <typeparam name="T">The type T.</typeparam>
+    /// <param name="index">The index.</param>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>The add to index and return incremented int t result.</returns>
     public static int AddToIndexAndReturnIncrementedInt<T>(int index, Dictionary<int, T> dictionary, T value)
     {
         dictionary.Add(index, value);
@@ -80,6 +124,13 @@ public partial class DictionaryHelper
     #region AddOrCreate
 
     // Adds a value to a list in the dictionary, creating the list if the key doesn't exist.
+    /// <summary>
+    /// Add or create t u.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>The add or create t u result.</returns>
     public static void AddOrCreate<T, U>(Dictionary<T, List<U>> dictionary, T key, U value)
         where T : notnull
     {
@@ -96,6 +147,13 @@ public partial class DictionaryHelper
     }
 
     // Gets or creates a list in the dictionary using a factory function.
+    /// <summary>
+    /// Add or create t 1 t 2.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="valueFactory">The value factory.</param>
+    /// <returns>The add or create t 1 t 2 result.</returns>
     public static List<T2> AddOrCreate<T1, T2>(Dictionary<T1, List<T2>> dictionary, T1 key,
         Func<T1, List<T2>> valueFactory)
         where T1 : notnull
@@ -111,6 +169,15 @@ public partial class DictionaryHelper
     }
 
     // Adds multiple values to a list in the dictionary, creating the list if needed.
+    /// <summary>
+    /// Add or create key value.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="values">The values.</param>
+    /// <param name="isPreventingDuplicities">The is preventing duplicities.</param>
+    /// <param name="stringDictionary">The string dictionary.</param>
+    /// <returns>The add or create key value result.</returns>
     public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> dictionary, Key key, List<Value> values,
         bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
         where Key : notnull
@@ -122,6 +189,15 @@ public partial class DictionaryHelper
 
     // Adds a value to a list in the dictionary with advanced comparison options.
     // Supports comparing collections as keys and preventing duplicate values.
+    /// <summary>
+    /// Add or create key value col type.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="isPreventingDuplicities">The is preventing duplicities.</param>
+    /// <param name="stringDictionary">The string dictionary.</param>
+    /// <returns>The add or create key value col type result.</returns>
     public static void AddOrCreate<Key, Value, ColType>(IDictionary<Key, List<Value>> dictionary, Key key, Value value,
         bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
         where Key : notnull
@@ -230,6 +306,15 @@ public partial class DictionaryHelper
     // Adds a value to a list in the dictionary, creating the list if the key doesn't exist.
     // If dictionary contains group with name key, adds value to this group.
     // Otherwise creates new group in dictionary with key and value.
+    /// <summary>
+    /// Add or create key value.
+    /// </summary>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="isPreventingDuplicities">The is preventing duplicities.</param>
+    /// <param name="stringDictionary">The string dictionary.</param>
+    /// <returns>The add or create key value result.</returns>
     public static void AddOrCreate<Key, Value>(IDictionary<Key, List<Value>> dictionary, Key key, Value value,
         bool isPreventingDuplicities = false, Dictionary<Key, List<string>>? stringDictionary = null)
         where Key : notnull
@@ -244,6 +329,13 @@ public partial class DictionaryHelper
     #region AddOrPlus
 
     // Adds a new key with initial value or increments existing value by the specified amount.
+    /// <summary>
+    /// Add or plus t.
+    /// </summary>
+    /// <typeparam name="T">The type T.</typeparam>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="increment">The increment.</param>
     public static void AddOrPlus<T>(Dictionary<T, int> dictionary, T key, int increment)
         where T : notnull
     {
@@ -254,6 +346,13 @@ public partial class DictionaryHelper
     }
 
     // Adds a new key with initial value or increments existing value by the specified amount.
+    /// <summary>
+    /// Add or plus t.
+    /// </summary>
+    /// <typeparam name="T">The type T.</typeparam>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="increment">The increment.</param>
     public static void AddOrPlus<T>(Dictionary<T, long> dictionary, T key, long increment)
         where T : notnull
     {
