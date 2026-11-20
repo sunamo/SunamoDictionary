@@ -1,4 +1,3 @@
-// variables names: ok
 namespace RunnerDictionary;
 
 internal class Program
